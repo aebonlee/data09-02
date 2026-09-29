@@ -40,5 +40,7 @@ const out = {
   count: items.length,
   items
 };
+// 기사 목록이 그대로면 파일을 건드리지 않습니다(갱신 시각만 바뀐 커밋이 매일 쌓이지 않게)
+if (JSON.stringify(items) === JSON.stringify(prev)) { console.log(report.join(', ') + ' → 바뀐 기사 없음 (' + items.length + '건)'); process.exit(0); }
 await writeFile(OUT, JSON.stringify(out, null, 1) + '\n');
 console.log(report.join(', ') + ' → 합계 ' + items.length + '건 (이전 ' + prev.length + '건)');
