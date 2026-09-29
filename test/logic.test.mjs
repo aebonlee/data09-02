@@ -27,11 +27,12 @@ test('영역 10개, 원문 순서·이름 그대로', () => {
   assert.deepEqual(C.AREAS.map(a => a.name), ['연소·폭발공학', '방폭공학', '기초역학', '연소기기 및 가스용품', '고압가스', 'LPG 설비', '도시가스', '수소안전', '가스용기', '저장탱크']);
   assert.deepEqual(C.AREAS.map(a => a.id), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 });
-test('평가 관점 4개, 사고 카드 5항목, 기술 카드 기술명+5항목', () => {
+// 2026-09-29 오후 수강생 요청으로 기술 카드가 「제목 + 내용」 + 목차 11개로 바뀌어 기대값을 고쳤습니다
+test('평가 관점 4개, 사고 카드 5항목, 기술 카드 제목·목차·내용', () => {
   assert.deepEqual(C.ROLES.map(r => r.label), ['가스기술사', '공학박사', '채점위원', '전문기자']);
   assert.deepEqual(C.ACCIDENT_FIELDS.map(f => f.label), ['사고 개요', '사고 원인', '사고발생 메커니즘', '재발방지대책', '가스기술사 종합의견']);
-  assert.deepEqual(C.TECH_FIELDS.map(f => f.label), ['기술 정의', '기존 기술의 문제점', '핵심 기술', '적용 분야', '향후 발전방향']);
-  assert.equal(L.cardColumns('tech')[1].label, '기술명');
+  assert.deepEqual(C.TECH_TOC, ['연소폭발공학', '방폭공학', '기초역학', '연소기기 및 가스용품', '고압가스', 'LPG설비', '도시가스', '수소안전', '가스용기', '저장탱크', '기타']);
+  assert.deepEqual(L.cardColumns('tech').map(c => c.label), ['카드번호', '제목', '목차', '내용', '작성 일시', '수정 일시']);
 });
 
 console.log('출제');
@@ -140,9 +141,11 @@ test('날짜별 요약과 영역별 평균·최근·취약 영역', () => {
 console.log('사고·기술 카드');
 test('제목 필수, URL 형식, 출처 없이 「확인」 체크 불가', () => {
   assert.deepEqual(L.validateCard('accident', {}).errors, [{ field: 'title', code: 'required' }]);
-  assert.equal(L.validateCard('tech', { title: 't', src_url: 'www.x' }).errors[0].code, 'bad_url');
-  assert.equal(L.validateCard('tech', { title: 't', src_checked: true }).errors[0].code, 'source_needed');
-  assert.equal(L.validateCard('tech', { title: 't', type: '없는 분야' }).errors[0].code, 'bad_code');
+  assert.equal(L.validateCard('accident', { title: 't', src_url: 'www.x' }).errors[0].code, 'bad_url');
+  assert.equal(L.validateCard('accident', { title: 't', src_checked: true }).errors[0].code, 'source_needed');
+  assert.equal(L.validateCard('accident', { title: 't', type: '없는 유형' }).errors[0].code, 'bad_code');
+  assert.deepEqual(L.validateCard('tech', { title: 't', toc: '없는 목차' }).errors, [{ field: 'toc', code: 'bad_code' }]);
+  assert.ok(L.validateCard('tech', { title: 't', toc: '기타' }).ok);
 });
 test('출처가 있고 원문 확인 체크까지 해야 「확인」, 아니면 미확인', () => {
   assert.equal(L.cardVerified({ src_title: '보고서' }), false);
@@ -159,7 +162,7 @@ test('카드 저장: 번호 채번·수정·삭제', () => {
   assert.equal(r.db.accidents[0].title, '가2'); assert.equal(r.db.accidents[0].src_checked, 'Y');
   const d = L.deleteCard(r.db, 'accident', 'ACC-002');
   assert.equal(d.db.accidents.length, 1);
-  assert.equal(L.upsertCard(L.emptyDb(), 'tech', { title: 't' }, NOW).id, 'TEC-001');
+  assert.equal(L.upsertCard(L.emptyDb(), 'tech', { title: 't', toc: '수소안전' }, NOW).id, 'TEC-001');
 });
 
 console.log('내보내기·가져오기');
@@ -336,6 +339,57 @@ test('기사 → 사고 카드 초안: 유형 추정, 출처는 미확인으로 
   const r = L.upsertCard(L.emptyDb(), 'accident', d, NOW);
   assert.ok(r.ok && !L.cardVerified(r.db.accidents[0]));
   assert.equal(L.guessAccidentType('배관 가스 누출'), '누출');
+});
+
+
+console.log('기술 카드 — 제목·내용·목차 (2026-09-29 오후 요청)');
+test('목차 이름 맞추기: 띄어쓰기·가운뎃점·오타(폭팔)·영역번호', () => {
+  assert.equal(L.tocOf('연소·폭발공학'), '연소폭발공학');
+  assert.equal(L.tocOf('연소폭팔공학'), '연소폭발공학');
+  assert.equal(L.tocOf('LPG 설비'), 'LPG설비');
+  assert.equal(L.tocOf('8'), '수소안전');
+  assert.equal(L.tocOf('11'), '');
+  assert.equal(L.tocOf('없음'), '');
+});
+test('저장: 제목·목차·내용만 남고, 목차 아래에 최근 수정순으로 쌓임', () => {
+  let r = L.upsertCard(L.emptyDb(), 'tech', { title: '수소 취성', toc: '수소안전', content: '고압 수소에서…', src_url: 'x' }, new Date(2026, 8, 28, 9, 0));
+  r = L.upsertCard(r.db, 'tech', { title: '방폭 등급', toc: '방폭공학', content: 'Ex d' }, new Date(2026, 8, 28, 10, 0));
+  r = L.upsertCard(r.db, 'tech', { title: '수소 충전소', toc: '수소안전', content: '…' }, new Date(2026, 8, 28, 11, 0));
+  assert.deepEqual(Object.keys(r.db.techs[0]).sort(), ['content', 'created_at', 'id', 'title', 'toc', 'updated_at']);
+  const g = L.techsByToc(r.db.techs);
+  assert.equal(g.length, 11);
+  assert.deepEqual(g[7].list.map(c => c.title), ['수소 충전소', '수소 취성']);
+  assert.deepEqual(g[1].list.map(c => c.title), ['방폭 등급']);
+  assert.equal(g[10].list.length, 0);
+});
+test('예전 기술 카드 자동 이관: 5항목·분야·연도·출처를 내용에 합치고, 관련 영역 → 목차', () => {
+  const old = { id: 'TEC-001', title: '수소 센서', when: '2024', type: '가스누출 감지', areas: '8;7', definition: '정의', problem: '', core: '핵심',
+    application: '', outlook: '', src_title: '보고서', src_org: '기관', src_url: 'https://a.b', src_checked: 'Y', created_at: 'c', updated_at: 'u' };
+  const m = L.migrateTech(old);
+  assert.deepEqual(Object.keys(m).sort(), ['content', 'created_at', 'id', 'title', 'toc', 'updated_at']);
+  assert.equal(m.toc, '수소안전');
+  assert.equal(m.content, '기술 분야: 가스누출 감지 · 연도: 2024\n\n■ 기술 정의\n정의\n\n■ 핵심 기술\n핵심\n\n출처: 보고서 · 기관 · https://a.b (원문 확인함)');
+  assert.equal(L.migrateTech({ title: '빈 옛 카드', areas: '' }).toc, '기타');
+  const again = L.migrateTech(m);
+  assert.deepEqual(again, m, '두 번 돌려도 같음');
+  const db = L.normalizeDb({ items: [], accidents: [], techs: [old] });
+  assert.equal(db.techs[0].toc, '수소안전');
+  assert.deepEqual(db.news, []);
+});
+test('엑셀 가져오기: 예전 「기술명·5항목」 시트도 제목·내용으로 읽음', () => {
+  const r = L.sheetsToDb({ 기술카드: [['카드번호', '기술명', '연도', '기술 분야', '관련 영역번호', '기술 정의', '기존 기술의 문제점', '핵심 기술', '적용 분야', '향후 발전방향', '출처_문서명', '출처_발행기관', '출처_URL', '출처 확인(Y)'],
+    ['TEC-001', '방폭 기술', '', '방폭', '2', '정의', '', '', '', '', '', '', '', '']] });
+  assert.equal(r.db.techs.length, 1);
+  assert.deepEqual([r.db.techs[0].title, r.db.techs[0].toc], ['방폭 기술', '방폭공학']);
+  assert.ok(r.db.techs[0].content.includes('■ 기술 정의\n정의'));
+  const now2 = L.sheetsToDb(L.dbToSheets({ items: [], accidents: [], techs: [{ id: 'TEC-002', title: 't', toc: '기타', content: 'c', created_at: '', updated_at: '' }] }));
+  assert.deepEqual(now2.db.techs[0], { id: 'TEC-002', title: 't', toc: '기타', content: 'c', created_at: '', updated_at: '' });
+});
+test('자동 출제: 글자 답변용 요청(JSON 강제 없음)', () => {
+  const r = L.buildOpenAIRequest('P', 'gpt-4o', { json: false });
+  assert.equal(r.response_format, undefined);
+  assert.equal(r.model, 'gpt-4o');
+  assert.ok(!/JSON/.test(r.messages[0].content));
 });
 
 console.log(process.exitCode ? '\n실패가 있습니다.' : '\n전체 ' + passed + '개 통과');

@@ -15,7 +15,7 @@
 --  테이블 (3)
 --    items      학습기록 — 날짜 × 영역 한 행에 문제·답안·4관점 평가·모범답안
 --    accidents  사고 카드 (5항목 + 출처)
---    techs      기술 카드 (기술명 + 5항목 + 출처)
+--    techs      기술 카드 — 2026-09-29 오후부터 제목·목차·내용 (예전 기술명+5항목 칸은 호환용으로 남김)
 -- ============================================================================
 
 -- ----------------------------------------------------------------------------
@@ -112,6 +112,15 @@ create table if not exists public.techs (
   -- ⚠ 프런트에서 upsert 할 때 onConflict 를 'owner_id,id' 로 반드시 지정할 것
   constraint techs_pkey primary key (owner_id, id)
 );
+
+-- 2026-09-29 오후 수강생 요청: 기술 카드 = 「제목 + 내용」 + 목차 11개 (config.js TECH_TOC)
+--   도구는 title·toc·content 만 씁니다. 위의 예전 칸(definition 등)은 이전 형식 데이터를
+--   옮겨 올 때를 위해 지우지 않았습니다(도구는 옮기면서 내용 한 칸으로 합칩니다 — logic.js migrateTech).
+alter table public.techs add column if not exists toc     text not null default '기타';
+alter table public.techs add column if not exists content text not null default '';
+alter table public.techs drop constraint if exists techs_toc_check;
+alter table public.techs add constraint techs_toc_check check (toc in ('연소폭발공학', '방폭공학', '기초역학',
+  '연소기기 및 가스용품', '고압가스', 'LPG설비', '도시가스', '수소안전', '가스용기', '저장탱크', '기타'));
 
 -- ----------------------------------------------------------------------------
 -- 2. 함수 — search_path 고정

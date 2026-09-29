@@ -82,10 +82,9 @@
         src_title: '', src_org: '', src_url: '', src_checked: '', created_at: d1 + ' 10:00', updated_at: d1 + ' 10:00'
       }],
       techs: [{
-        id: 'TEC-001', title: '(예시 카드) 양식 확인용 — 실제 기술 정보가 아닙니다', when: '', type: '기타', areas: '8',
-        definition: '기술 정의를 적는 칸입니다.', problem: '기존 기술의 문제점을 적는 칸입니다.',
-        core: '핵심 기술을 적는 칸입니다.', application: '적용 분야를 적는 칸입니다.', outlook: '향후 발전방향을 적는 칸입니다.',
-        src_title: '', src_org: '', src_url: '', src_checked: '', created_at: d1 + ' 10:00', updated_at: d1 + ' 10:00'
+        id: 'TEC-001', title: '(예시 카드) 양식 확인용 — 실제 공부 내용이 아닙니다', toc: '수소안전',
+        content: '공부한 내용을 자유롭게 적는 칸입니다. 저장하면 고른 목차(여기서는 「수소안전」) 아래에 쌓입니다.',
+        created_at: d1 + ' 10:00', updated_at: d1 + ' 10:00'
       }]
     };
   }

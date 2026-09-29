@@ -7,7 +7,8 @@
  *   #/stats                 영역별 현황 (표·그래프, CSV)
  *   #/accidents[/<id|new>]  사고 카드 (5항목 + 출처)
  *   #/accidents/news        가스사고 기사 목록 (날짜순 — 자동 수집 + 붙여넣기)
- *   #/techs[/<id|new>]      기술 카드 (6항목 + 출처)
+ *   #/techs[/toc/<번호>]     기술 카드 — 목차 11개, 목차를 누르면 그 아래 카드 목록·내용
+ *   #/techs/<id|new>[/<번호>] 기술 카드 쓰기 (제목·목차·내용)
  *   #/prompts               4관점 평가 프롬프트 세트
  *   #/data                  데이터 (예시 데이터·엑셀 내보내기/가져오기)
  */
@@ -195,9 +196,50 @@
   }
 
   // 출제: ① AI 프롬프트 → 붙여넣기 ② 직접 입력
+  var qAuto = { busy: false, error: '' };
+  // 자동 출제 — 본인 키로 출제 프롬프트를 보내고, 받은 글을 「영역별로 나누기」와 같은 함수로 읽어 저장합니다
+  function runAutoQuestions(date, ids) {
+    var ai = S.getAi();
+    if (!ai.key || qAuto.busy) return;
+    S.markAutoQuestion(date);
+    qAuto = { busy: true, error: '' };
+    var route = location.hash;
+    if (location.hash === route) render();
+    fetch(C.AI.endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + ai.key },
+      body: JSON.stringify(L.buildOpenAIRequest(L.buildQuestionPrompt(db, date, ids), ai.model, { json: false }))
+    }).then(function (res) {
+      return res.json().catch(function () { return { error: { message: '응답을 읽지 못했습니다' } }; })
+        .then(function (j) { return L.extractOpenAIText(j, res.ok ? 0 : res.status); });
+    }).then(function (text) {
+      var p = L.parseQuestions(text);
+      var list = p.items.filter(function (q) { return ids.indexOf(q.area_id) !== -1 && !L.findItem(db, date, q.area_id); });
+      if (!list.length) throw new Error('받은 답변에서 문제를 찾지 못했습니다');
+      var r = L.addQuestions(db, date, list, 'AI 자동', now());
+      if (!r.ok) throw new Error('저장하지 못했습니다');
+      save(r.db);
+      qAuto = { busy: false, error: '' };
+      toast('AI 가 ' + r.added + '문제를 출제했습니다.' + (list.length < ids.length ? ' 빠진 영역은 아래에서 채우십시오.' : ''));
+    }).catch(function (e) {
+      var msg = (e && e.message) || String(e);
+      if (/Failed to fetch|NetworkError|Load failed/i.test(msg)) msg = '네트워크에 연결하지 못했습니다.';
+      qAuto = { busy: false, error: 'AI 자동 출제 실패 — ' + msg + ' 아래 출제 프롬프트로 이어서 하십시오.' };
+    }).then(function () { if (location.hash === route || (!location.hash && route === '')) render(); });
+  }
   function questionCreator(date, missing) {
     var ids = missing.map(function (a) { return a.id; });
     var prompt = L.buildQuestionPrompt(db, date, ids);
+    var ai = S.getAi();
+    // 그날 처음 열었고 자동 출제가 켜져 있으면 한 번만 자동으로 (같은 날짜 재시도는 버튼으로)
+    if (ai.key && S.getAutoQuestions() && date === today() && missing.length === C.AREAS.length && !qAuto.busy && !S.autoQuestionTried(date)) {
+      setTimeout(function () { runAutoQuestions(date, ids); }, 0);
+    }
+    var autoRow = ai.key ? h('div', { class: 'auto-box' },
+      qAuto.busy ? h('p', { class: 'alert info', role: 'status' }, 'AI 가 ' + ids.length + '개 영역 문제를 출제하고 있습니다. 보통 10~30초 걸립니다.')
+        : h('div', { class: 'btn-row' }, h('button', { type: 'button', class: 'btn btn-primary', onclick: function () { runAutoQuestions(date, ids); } }, 'AI 로 ' + ids.length + '문제 출제'),
+          h('span', { class: 'note' }, '자동 모드 · ' + ai.model)),
+      qAuto.error ? h('div', { class: 'alert warn' }, qAuto.error) : null) : null;
     var paste = h('textarea', { class: 'tall', name: 'q_paste', placeholder: '[1] 연소·폭발공학\n문제 내용…\n\n[2] 방폭공학\n문제 내용…' });
     var preview = h('div');
     var parsed = null;
@@ -250,6 +292,7 @@
 
     return h('section', { class: 'card' },
       h('h2', null, '문제 출제 (' + missing.length + '개 영역 남음)'),
+      autoRow,
       h('p', { class: 'note' }, 'AI 대화창(ChatGPT·Claude 등)에 프롬프트를 붙여 넣고, 받은 답변을 아래 칸에 그대로 붙여 넣으면 영역별로 나눕니다. 프롬프트에는 영역마다 최근 ' + C.HISTORY_IN_PROMPT + '개까지 이전 문제가 들어가 겹치지 않게 출제를 요청합니다.'),
       promptPanel('1) 출제 프롬프트', prompt),
       h('div', { class: 'ai-step' },
@@ -416,11 +459,14 @@
     var keyInput = h('input', { type: 'password', autocomplete: 'off', spellcheck: 'false', placeholder: 'sk-로 시작하는 키', 'aria-label': 'OpenAI API 키' });
     var model = h('select', { 'aria-label': '모델' }, C.AI.models.map(function (m) { return h('option', { value: m, selected: m === ai.model }, m + (m === C.AI.defaultModel ? ' (기본·저렴)' : '')); }));
     model.addEventListener('change', function () { S.setAiModel(model.value); toast('모델을 ' + model.value + ' 로 바꿨습니다.'); });
+    var autoQ = h('input', { type: 'checkbox', checked: S.getAutoQuestions() });
+    autoQ.addEventListener('change', function () { S.setAutoQuestions(autoQ.checked); toast(autoQ.checked ? '자동 출제를 켰습니다.' : '자동 출제를 껐습니다.'); });
     add(box,
       h('p', null, ai.key ? h('span', null, '자동 모드 켜짐 · 저장된 키 ', h('code', null, L.maskKey(ai.key))) : '자동 모드 꺼짐 · 키가 없으면 통합 프롬프트(복사·붙여넣기)로 진행합니다.'),
       h('div', { class: 'form-grid' },
         field(ai.key ? '새 키로 바꾸기' : 'OpenAI API 키 (선택)', keyInput, { hint: '이 브라우저(localStorage)에만 저장되고 엑셀 내보내기·리포에는 들어가지 않습니다. 여러 사람이 쓰는 PC에서는 넣지 마십시오.' }),
         field('모델', model, { hint: '요금은 본인 OpenAI 계정에 청구됩니다. 답안 1건에 보통 수 원~수십 원 수준입니다(모델·분량에 따라 다름).' })),
+      h('label', { class: 'check' }, autoQ, '「오늘의 문제」를 열었을 때 그날 문제가 없으면 AI 가 10문제를 자동 출제 (키가 있을 때만)'),
       h('div', { class: 'btn-row' },
         h('button', { type: 'button', class: 'btn btn-primary', onclick: function () {
           var v = keyInput.value.trim();
@@ -742,6 +788,80 @@
       h('section', { class: 'card' }, form));
   }
 
+  // ── 기술 카드 = 공부 노트 (2026-09-29 오후 요청: 제목 + 내용, 목차별로 쌓기) ──
+  function viewTechs(tocIdx) {
+    var groups = L.techsByToc(db.techs);
+    var sel = tocIdx === '' || tocIdx == null ? -1 : Number(tocIdx);
+    if (!(sel >= 0 && sel < groups.length)) sel = -1;
+    add(main, h('div', { class: 'page-head' }, h('h1', null, '기술 카드'),
+      h('div', { class: 'btn-row' },
+        h('button', { type: 'button', class: 'btn', disabled: db.techs.length ? null : true, onclick: function () {
+          download('기술카드_' + today() + '.csv', new Blob([L.toCsv(L.cardColumns('tech'), db.techs)], { type: 'text/csv;charset=utf-8' }));
+        } }, 'CSV 내보내기'),
+        h('a', { class: 'btn btn-primary', href: '#/techs/new' + (sel >= 0 ? '/' + sel : '') }, '새 카드'))),
+      h('p', { class: 'note' }, '공부한 내용을 제목과 내용으로 적고 목차를 골라 저장하면 그 목차 아래에 쌓입니다. 목차를 누르면 저장한 카드와 내용이 보입니다.'));
+    add(main, h('nav', { class: 'toc-grid', 'aria-label': '기술 카드 목차' }, groups.map(function (g, i) {
+      return h('a', { class: 'toc-item' + (g.list.length ? '' : ' empty'), href: sel === i ? '#/techs' : '#/techs/toc/' + i, 'aria-current': sel === i ? 'page' : null },
+        h('span', { class: 'toc-name' }, g.toc), h('span', { class: 'toc-count' }, g.list.length + '장'));
+    })));
+    if (sel === -1) {
+      add(main, h('p', { class: 'card note' }, db.techs.length ? '위 목차를 누르면 그 목차에 저장한 카드가 보입니다.' : '아직 카드가 없습니다. 「새 카드」로 시작하십시오.'));
+      return;
+    }
+    var g = groups[sel];
+    add(main, h('section', { class: 'card' },
+      h('div', { class: 'page-head' }, h('h2', null, g.toc + ' (' + g.list.length + '장)'),
+        h('a', { class: 'btn btn-small', href: '#/techs/new/' + sel }, '이 목차에 새 카드')),
+      g.list.length ? h('div', { class: 'tech-list' }, g.list.map(function (c) {
+        return h('article', { class: 'tech-card' },
+          h('details', { open: g.list.length <= 3 ? true : null },
+            h('summary', null, h('span', { class: 'title' }, c.title), h('span', { class: 'note' }, ' · ' + (c.updated_at || c.created_at || ''))),
+            h('div', { class: 'pre tech-content' }, c.content || '(내용 없음)'),
+            h('div', { class: 'btn-row' }, h('a', { class: 'btn btn-small', href: '#/techs/' + c.id }, '고치기'))));
+      })) : h('p', { class: 'note' }, '이 목차에는 아직 카드가 없습니다.')));
+  }
+  function viewTechForm(id, tocIdx) {
+    var c = id === 'new' ? { toc: C.TECH_TOC[Number(tocIdx)] || '' } : db.techs.filter(function (x) { return x.id === id; })[0];
+    if (!c) { add(main, h('p', null, '카드를 찾지 못했습니다.')); return; }
+    var back = function () { var i = C.TECH_TOC.indexOf(L.tocOf(c.toc)); return i >= 0 ? '#/techs/toc/' + i : '#/techs'; };
+    var form = h('form', { class: 'form-grid' },
+      field('제목 (필수)', h('input', { name: 'title', value: c.title || '', maxlength: '200' }), { span: true, name: 'title' }),
+      field('목차 (필수)', h('select', { name: 'toc' }, h('option', { value: '' }, '목차 고르기'),
+        C.TECH_TOC.map(function (t) { return h('option', { value: t, selected: t === L.tocOf(c.toc) }, t); })), { name: 'toc' }),
+      field('내용', h('textarea', { name: 'content', class: 'tall' }), { span: true, name: 'content' }),
+      h('div', { class: 'btn-row span-all' },
+        h('button', { type: 'submit', class: 'btn btn-primary' }, '저장'),
+        h('a', { class: 'btn', href: back() }, '목록으로'),
+        c.id ? h('button', { type: 'button', class: 'btn btn-danger', onclick: function () {
+          confirmDo('카드 삭제', '「' + c.title + '」 카드를 지웁니다. 되돌릴 수 없습니다.', '삭제', function () {
+            var r = L.deleteCard(db, 'tech', c.id);
+            if (r.ok) { save(r.db); toast('삭제했습니다.'); go(back()); }
+          });
+        } }, '삭제') : null));
+    form.elements.content.value = c.content || '';
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var card = { id: c.id, title: form.elements.title.value.trim(), toc: form.elements.toc.value, content: form.elements.content.value.trim() };
+      var r = L.upsertCard(db, 'tech', card, now());
+      if (!r.ok) { showErrors(form, r.errors); return; }
+      save(r.db); toast('「' + card.toc + '」 목차에 저장했습니다 (' + r.id + ').');
+      go('#/techs/toc/' + C.TECH_TOC.indexOf(card.toc));
+    });
+    add(main, h('div', { class: 'page-head' }, h('h1', null, c.id ? '기술 카드 ' + c.id : '새 기술 카드')), h('section', { class: 'card' }, form));
+  }
+
+  // 수업이 끝난 뒤에도 계속 쓰기 (2026-09-29 오후 질문에 대한 안내)
+  function continueHelp() {
+    return h('div', { class: 'help-box' },
+      h('p', null, '이 저장소는 강의가 끝나고 일정 기간 뒤 비공개로 바뀝니다. 계속 쓰시려면 그 전에 본인 GitHub 계정으로 Fork 해 두십시오. Fork 한 곳에서는 기사 자동 갱신이 본인 계정으로 계속 돕니다.'),
+      h('ol', null,
+        h('li', null, 'github.com/aebonlee/data09-02 에서 「Fork」 → 본인 계정에 복사합니다.'),
+        h('li', null, 'Fork 한 저장소의 「Actions」 탭 → 「I understand my workflows, go ahead and enable them」을 눌러 켭니다. 그다음 왼쪽 「가스사고 기사 목록 갱신」 → 「Enable workflow」가 보이면 누르고, 「Run workflow」로 한 번 돌려 봅니다.'),
+        h('li', null, '「Settings」 → 「Pages」 → Source 「Deploy from a branch」, Branch 「main」 / 「(root)」 → Save. 1~2분 뒤 https://<내 아이디>.github.io/data09-02/ 에서 열립니다.'),
+        h('li', null, '주소가 바뀌면 브라우저 저장 데이터가 따라오지 않습니다. 옮기기 전에 지금 주소의 「데이터 → 엑셀로 내보내기」로 받은 뒤, 새 주소에서 「가져오기」 하십시오. (자동 모드 키도 새 주소에서 다시 넣습니다.)')),
+      h('p', { class: 'note' }, '매일 학습문제는 이 브라우저에서 만듭니다. 자동 모드 키가 있으면 「오늘의 문제」를 열 때 AI 가 10문제를 자동 출제하고, 키가 없으면 출제 프롬프트를 복사해 ChatGPT 에 붙여 넣습니다. 이 방식은 Fork 여부·저장소 공개 여부와 관계없이 계속 됩니다.'));
+  }
+
   // ── 가스사고 기사 (2026-09-29 추가 요청) ─────────────────
   // 정적 웹은 뉴스 사이트를 직접 긁을 수 없어(CORS) 세 갈래로 모읍니다.
   //  ① GitHub Actions 가 매일 받아 두는 data/news.json (제목·링크·날짜·언론사, 본문 없음)
@@ -794,7 +914,9 @@
       add(stat, h('div', { class: 'alert warn' }, '자동 수집 목록(' + C.NEWS.jsonPath + ')을 읽지 못했습니다: ' + newsFeed.error));
     } else {
       var up = newsFeed.updated ? new Date(newsFeed.updated) : null;
-      add(stat, h('p', { class: 'note' }, '자동 수집 ' + newsFeed.items.length + '건' + (up && !isNaN(up) ? ' · 마지막 갱신 ' + L.toDateTimeStr(up) : '') + ' · 매일 아침 7시쯤 GitHub 가 새로 받습니다.'));
+      add(stat, h('div', { class: 'alert info news-auto' },
+        h('b', null, '매일 07:10(한국 시각) 자동 갱신'), ' — 지금 수록된 기사로 끝나지 않습니다. GitHub Actions 가 매일 새 기사를 받아 목록에 더합니다(1년 지난 기사는 빠짐).',
+        h('br'), '지금 ' + newsFeed.items.length + '건 · 마지막 갱신 ' + (up && !isNaN(up) ? L.toDateTimeStr(up) : '-')));
     }
     var rssBox = h('div');
     add(stat, h('div', { class: 'btn-row' },
@@ -875,7 +997,8 @@
             download('가스사고기사_' + today() + '.csv', new Blob([L.toCsv(L.NEWS_COLUMNS, rows.map(function (n) { var o = JSON.parse(JSON.stringify(n)); o.origin = n.origin === 'paste' ? '붙여넣기' : '자동 수집'; return o; }))], { type: 'text/csv;charset=utf-8' }));
           } }, 'CSV 내보내기')),
         rows.length ? list : h('p', { class: 'note' }, '조건에 맞는 기사가 없습니다.')),
-      h('section', { class: 'card' }, pasteBox));
+      h('section', { class: 'card' }, pasteBox),
+      h('section', { class: 'card' }, h('details', null, h('summary', null, '수업이 끝난 뒤에도 기사·문제가 계속 갱신되나요?'), continueHelp())));
   }
 
   // ── 프롬프트 세트 ─────────────────────────────────────────
@@ -909,8 +1032,9 @@
       h('section', { class: 'card' }, h('h2', null, 'AI 자동 모드 (선택)'),
         h('p', { class: 'note' }, '본인 OpenAI API 키를 넣으면 답안을 제출할 때 3단계 평가와 4단계 모범답안을 AI 가 바로 작성합니다. 키는 이 브라우저에만 저장되며, 엑셀로 내보내도 들어가지 않습니다.'),
         aiSettingsBox()),
+      h('section', { class: 'card' }, h('h2', null, '수업이 끝난 뒤에도 계속 쓰기'), continueHelp()),
       h('section', { class: 'card' }, h('h2', null, '엑셀 내보내기'),
-        h('p', { class: 'note' }, '시트 3개(학습기록·사고카드·기술카드)가 든 xlsx 파일을 받습니다.'),
+        h('p', { class: 'note' }, '시트 3개(학습기록·사고카드·기술카드)가 든 xlsx 파일을 받습니다. 예전 형식(기술명·5항목)의 기술카드 시트도 가져올 때 제목·내용으로 바꿔 읽습니다.'),
         h('button', { type: 'button', class: 'btn btn-primary', onclick: exportExcel }, '엑셀로 내보내기')),
       h('section', { class: 'card' }, h('h2', null, '엑셀 가져오기'),
         h('p', { class: 'note' }, '이 도구에서 내보낸 xlsx 파일을 읽어 지금 데이터를 바꿉니다. 먼저 지금 데이터를 내보내 두십시오.'),
@@ -975,7 +1099,7 @@
       case 'print': viewPrint(parts[1]); break;
       case 'stats': viewStats(); break;
       case 'accidents': parts[1] === 'news' ? viewNews() : parts[1] ? viewCardForm('accident', parts[1]) : viewCards('accident'); break;
-      case 'techs': parts[1] ? viewCardForm('tech', parts[1]) : viewCards('tech'); break;
+      case 'techs': parts[1] === 'toc' ? viewTechs(parts[2]) : parts[1] ? viewTechForm(parts[1], parts[2]) : viewTechs(''); break;
       case 'prompts': viewPrompts(); break;
       case 'data': viewData(); break;
       default: viewToday(parts[1]);

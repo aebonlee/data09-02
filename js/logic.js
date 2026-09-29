@@ -496,16 +496,20 @@
   }
 
   // ── 자동 모드: OpenAI API 요청·응답 (키는 인자로만 받고 저장하지 않습니다) ──────
-  function buildOpenAIRequest(prompt, model) {
-    return {
+  // opts.json === false 면 글자 답변(출제용 — 「[번호] 영역명」 형식을 parseQuestions 가 읽음)
+  function buildOpenAIRequest(prompt, model, opts) {
+    var json = !opts || opts.json !== false;
+    var req = {
       model: model || C.AI.defaultModel,
-      temperature: 0.3,
-      response_format: { type: 'json_object' },
+      temperature: json ? 0.3 : 0.8,
       messages: [
-        { role: 'system', content: '당신은 가스기술사 필기시험 채점위원이자 모범답안 집필자입니다. 반드시 요청한 JSON 형식으로만 답합니다.' },
+        { role: 'system', content: json ? '당신은 가스기술사 필기시험 채점위원이자 모범답안 집필자입니다. 반드시 요청한 JSON 형식으로만 답합니다.'
+          : '당신은 가스기술사 필기시험 출제위원입니다. 요청한 답변 형식을 그대로 지킵니다.' },
         { role: 'user', content: prompt }
       ]
     };
+    if (json) req.response_format = { type: 'json_object' };
+    return req;
   }
   // 응답 JSON → 본문 글자. 오류 응답이면 사람이 읽을 메시지를 담아 던집니다.
   function extractOpenAIText(json, status) {
@@ -721,7 +725,61 @@
 
   // ── 사고·기술 카드 ───────────────────────────────────────────
   var CARD_COMMON = ['id', 'title', 'when', 'type', 'areas', 'src_title', 'src_org', 'src_url', 'src_checked', 'created_at', 'updated_at'];
-  function cardFields(kind) { return (kind === 'accident' ? C.ACCIDENT_FIELDS : C.TECH_FIELDS).map(function (f) { return f.key; }); }
+  // 기술 카드는 2026-09-29 오후부터 「제목·목차·내용」만 둡니다 (공부한 내용을 적는 노트)
+  var TECH_COMMON = ['id', 'title', 'toc', 'content', 'created_at', 'updated_at'];
+  function cardFields(kind) { return kind === 'accident' ? C.ACCIDENT_FIELDS.map(function (f) { return f.key; }) : []; }
+  function commonKeys(kind) { return kind === 'accident' ? CARD_COMMON : TECH_COMMON; }
+  // 목차 이름 맞추기 — 띄어쓰기·가운뎃점 차이(「연소·폭발공학」「LPG 설비」)와 영역 번호(1~10)도 받습니다
+  function tocOf(v) {
+    var s = String(v == null ? '' : v).trim();
+    if (!s) return '';
+    if (/^\d{1,2}$/.test(s)) return C.TECH_TOC[Number(s) - 1] && Number(s) <= 10 ? C.TECH_TOC[Number(s) - 1] : '';
+    var n = normName(s).replace(/폭팔/g, '폭발');
+    return C.TECH_TOC.filter(function (t) { return normName(t) === n; })[0] || '';
+  }
+  // 예전 기술 카드(기술명 + 5항목 + 출처) → 제목·목차·내용. 이미 새 형식이면 목차만 맞춥니다.
+  function migrateTech(c) {
+    c = c || {};
+    var legacy = C.TECH_FIELDS.some(function (f) { return String(c[f.key] || '').trim(); }) ||
+      ['when', 'type', 'src_title', 'src_org', 'src_url'].some(function (k) { return String(c[k] || '').trim(); });
+    var content = String(c.content || '').trim();
+    if (legacy) {
+      var parts = content ? [content] : [];
+      var meta = [];
+      if (String(c.type || '').trim()) meta.push('기술 분야: ' + String(c.type).trim());
+      if (String(c.when || '').trim()) meta.push('연도: ' + String(c.when).trim());
+      if (meta.length) parts.push(meta.join(' · '));
+      C.TECH_FIELDS.forEach(function (f) {
+        var v = String(c[f.key] || '').trim();
+        if (v) parts.push('■ ' + f.label + '\n' + v);
+      });
+      var src = [c.src_title, c.src_org, c.src_url].map(function (x) { return String(x || '').trim(); }).filter(Boolean);
+      if (src.length) parts.push('출처: ' + src.join(' · ') + ((c.src_checked === true || c.src_checked === 'Y') ? ' (원문 확인함)' : ''));
+      content = parts.join('\n\n');
+    }
+    var toc = tocOf(c.toc);
+    if (!toc) {
+      var first = String(c.areas || '').split(/[;,]/)[0];
+      toc = tocOf(first) || '기타';
+    }
+    return { id: c.id || '', title: String(c.title || '').trim(), toc: toc, content: content,
+      created_at: c.created_at || '', updated_at: c.updated_at || '' };
+  }
+  // 저장소·엑셀에서 읽은 DB 를 지금 형식으로 (기술 카드 이관)
+  function normalizeDb(db) {
+    var out = clone(db);
+    out.techs = (out.techs || []).map(migrateTech);
+    if (!Array.isArray(out.news)) out.news = [];
+    return out;
+  }
+  // 목차별 묶음 — 목차 순서대로, 각 목차 안은 최근 수정순
+  function techsByToc(techs) {
+    return C.TECH_TOC.map(function (t) {
+      var list = (techs || []).filter(function (c) { return (tocOf(c.toc) || '기타') === t; })
+        .sort(function (a, b) { var x = a.updated_at || '', y = b.updated_at || ''; return x < y ? 1 : x > y ? -1 : 0; });
+      return { toc: t, list: list };
+    });
+  }
   function cardKey(kind) { return kind === 'accident' ? 'accidents' : 'techs'; }
   // 출처(문서명 또는 URL)가 있고, 원문을 직접 확인했다고 표시한 카드만 「확인」
   function cardVerified(card) {
@@ -731,13 +789,16 @@
   function validateCard(kind, card) {
     var errors = [];
     if (!String(card.title || '').trim()) errors.push({ field: 'title', code: 'required' });
+    if (kind === 'tech') { // 기술 카드는 출처 칸이 없습니다(제목·목차·내용)
+      if (!tocOf(card.toc)) errors.push({ field: 'toc', code: 'bad_code' });
+      return { ok: !errors.length, errors: errors };
+    }
     var url = String(card.src_url || '').trim();
     if (url && !/^https?:\/\/\S+$/i.test(url)) errors.push({ field: 'src_url', code: 'bad_url' });
     if ((card.src_checked === true || card.src_checked === 'Y') && !String(card.src_title || '').trim() && !url) {
       errors.push({ field: 'src_title', code: 'source_needed' });
     }
-    if (kind === 'tech' && card.type && C.TECH_CATEGORIES.indexOf(card.type) === -1) errors.push({ field: 'type', code: 'bad_code' });
-    if (kind === 'accident' && card.type && C.ACCIDENT_TYPES.indexOf(card.type) === -1) errors.push({ field: 'type', code: 'bad_code' });
+    if (card.type && C.ACCIDENT_TYPES.indexOf(card.type) === -1) errors.push({ field: 'type', code: 'bad_code' });
     return { ok: !errors.length, errors: errors };
   }
   function nextCardId(list, prefix) {
@@ -752,9 +813,10 @@
     var list = out[cardKey(kind)];
     var ts = toDateTimeStr(now || new Date());
     var row = {};
-    CARD_COMMON.concat(cardFields(kind)).forEach(function (k) { row[k] = card[k] == null ? '' : card[k]; });
+    commonKeys(kind).concat(cardFields(kind)).forEach(function (k) { row[k] = card[k] == null ? '' : card[k]; });
     row.title = String(row.title).trim();
-    row.src_checked = (card.src_checked === true || card.src_checked === 'Y') ? 'Y' : '';
+    if (kind === 'tech') row.toc = tocOf(row.toc);
+    else row.src_checked = (card.src_checked === true || card.src_checked === 'Y') ? 'Y' : '';
     var cur = card.id ? list.filter(function (c) { return c.id === card.id; })[0] : null;
     if (cur) {
       row.created_at = cur.created_at; row.updated_at = ts;
@@ -792,16 +854,25 @@
     return cols;
   }
   function cardColumns(kind) {
-    var F = kind === 'accident' ? C.ACCIDENT_FIELDS : C.TECH_FIELDS;
+    if (kind === 'tech') {
+      return [{ key: 'id', label: '카드번호' }, { key: 'title', label: '제목', alias: ['기술명'] }, { key: 'toc', label: '목차' },
+        { key: 'content', label: '내용' }, { key: 'created_at', label: '작성 일시' }, { key: 'updated_at', label: '수정 일시' }];
+    }
     var cols = [{ key: 'id', label: '카드번호' },
-      { key: 'title', label: kind === 'accident' ? '사고명' : '기술명' },
-      { key: 'when', label: kind === 'accident' ? '발생 시기' : '연도' },
-      { key: 'type', label: kind === 'accident' ? '사고 유형' : '기술 분야' },
+      { key: 'title', label: '사고명' },
+      { key: 'when', label: '발생 시기' },
+      { key: 'type', label: '사고 유형' },
       { key: 'areas', label: '관련 영역번호' }];
-    F.forEach(function (f) { cols.push({ key: f.key, label: f.label }); });
+    C.ACCIDENT_FIELDS.forEach(function (f) { cols.push({ key: f.key, label: f.label }); });
     cols.push({ key: 'src_title', label: '출처_문서명' }, { key: 'src_org', label: '출처_발행기관' }, { key: 'src_url', label: '출처_URL' },
       { key: 'src_checked', label: '출처 확인(Y)' }, { key: 'created_at', label: '작성 일시' }, { key: 'updated_at', label: '수정 일시' });
     return cols;
+  }
+  // 예전(1차) 기술카드 시트의 칸 — 가져올 때만 읽어 「내용」으로 합칩니다
+  function legacyTechColumns() {
+    var cols = [{ key: 'when', label: '연도' }, { key: 'type', label: '기술 분야' }, { key: 'areas', label: '관련 영역번호' }];
+    C.TECH_FIELDS.forEach(function (f) { cols.push({ key: f.key, label: f.label }); });
+    return cols.concat([{ key: 'src_title', label: '출처_문서명' }, { key: 'src_org', label: '출처_발행기관' }, { key: 'src_url', label: '출처_URL' }, { key: 'src_checked', label: '출처 확인(Y)' }]);
   }
   var SHEET_NAMES = { items: '학습기록', accidents: '사고카드', techs: '기술카드' };
   function sheetColumns(key) { return key === 'items' ? itemColumns() : cardColumns(key === 'accidents' ? 'accident' : 'tech'); }
@@ -845,9 +916,11 @@
       var rows = sheets[name];
       if (!rows || !rows.length) { report.skipped.push(name); return; }
       var cols = sheetColumns(k);
+      if (k === 'techs') cols = cols.concat(legacyTechColumns());
       var head = (rows[0] || []).map(cellToString);
       var idx = cols.map(function (c) {
         var j = head.indexOf(c.label);
+        (c.alias || []).forEach(function (a) { if (j === -1) j = head.indexOf(a); });
         return j === -1 ? head.indexOf(c.key) : j;
       });
       if (idx[0] === -1 || idx[1] === -1) { report.problems.push(name + ': 머리행(' + cols[0].label + '·' + cols[1].label + ')을 찾지 못했습니다'); return; }
@@ -872,6 +945,8 @@
           if (o.eval_at && totalScore(pick(o)) == null) { report.problems.push(name + ' ' + (n + 2) + '행: 평가 점수가 빠져 평가를 비움'); o.eval_at = ''; }
         } else if (!o.title) {
           return;
+        } else if (k === 'techs') {
+          o = migrateTech(o);
         }
         list.push(o);
       });
@@ -900,6 +975,7 @@
     parseCombined: parseCombined, saveCombined: saveCombined, MARK_EVAL: MARK_EVAL, MARK_MODEL: MARK_MODEL,
     buildOpenAIRequest: buildOpenAIRequest, extractOpenAIText: extractOpenAIText, looksLikeApiKey: looksLikeApiKey, maskKey: maskKey,
     parseNewsDate: parseNewsDate, parseRss: parseRss, parseNewsPaste: parseNewsPaste, excerpt: excerpt,
+    TECH_TOC: C.TECH_TOC, tocOf: tocOf, migrateTech: migrateTech, normalizeDb: normalizeDb, techsByToc: techsByToc,
     mergeNews: mergeNews, newsToCardDraft: newsToCardDraft, guessAccidentType: guessAccidentType, NEWS_COLUMNS: NEWS_COLUMNS
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;

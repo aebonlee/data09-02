@@ -49,7 +49,12 @@
     { key: 'prevention', label: '재발방지대책' },
     { key: 'opinion', label: '가스기술사 종합의견' }
   ];
-  // 기술 카드 6항목 (제출 원문 ③ 순서 그대로 — 첫 항목 「기술명」은 카드 제목)
+  // 기술 카드 — 2026-09-29 오후 요청으로 「제목 + 내용」 두 칸과 목차로 바꿨습니다.
+  // 목차 이름은 제출자가 적은 그대로(원문의 「연소폭팔공학」 오타만 「연소폭발공학」으로 바로잡음).
+  // 앞의 10개는 출제 영역 1~10 과 순서가 같습니다.
+  var TECH_TOC = ['연소폭발공학', '방폭공학', '기초역학', '연소기기 및 가스용품', '고압가스',
+    'LPG설비', '도시가스', '수소안전', '가스용기', '저장탱크', '기타'];
+  // 예전(1차) 기술 카드 6항목 — 옛 데이터·엑셀을 「내용」 한 칸으로 옮길 때만 씁니다
   var TECH_FIELDS = [
     { key: 'definition', label: '기술 정의' },
     { key: 'problem', label: '기존 기술의 문제점' },
@@ -90,7 +95,7 @@
   var api = {
     GRADING_GUIDE: GRADING_GUIDE, AI: AI, NEWS: NEWS,
     AREAS: AREAS, ROLES: ROLES, SUMMARY_LABEL: SUMMARY_LABEL,
-    ACCIDENT_FIELDS: ACCIDENT_FIELDS, TECH_FIELDS: TECH_FIELDS,
+    ACCIDENT_FIELDS: ACCIDENT_FIELDS, TECH_FIELDS: TECH_FIELDS, TECH_TOC: TECH_TOC,
     TECH_CATEGORIES: TECH_CATEGORIES, ACCIDENT_TYPES: ACCIDENT_TYPES,
     HISTORY_IN_PROMPT: 20, // 출제 프롬프트에 영역별로 넣을 최근 문제 수
     SIMILAR_THRESHOLD: 0.8 // 이전 문제와 이만큼 비슷하면 중복 경고

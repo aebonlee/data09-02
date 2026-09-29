@@ -102,6 +102,14 @@ begin
   exception when check_violation then v_raised := true; end;
   perform public._assert(v_raised, '사고 유형은 누출·화재·폭발·기타만 (CHECK)');
 
+  -- 기술 카드 제목·목차·내용 (2026-09-29 오후)
+  insert into public.techs (id, title, toc, content) values ('TEC-010', '수소 취성', '수소안전', '고압 수소에서 금속이 약해진다');
+  perform public._assert_eq((select toc from public.techs where id = 'TEC-001'), '기타', '목차를 안 주면 「기타」');
+  v_raised := false;
+  begin insert into public.techs (id, title, toc) values ('TEC-011', '목차 틀림', '연소폭팔공학');
+  exception when check_violation then v_raised := true; end;
+  perform public._assert(v_raised, '목차는 11개 중 하나만 (CHECK)');
+
   v_raised := false;
   begin insert into public.techs (id, title, src_url) values ('TEC-002', 'URL 틀림', 'ftp://x');
   exception when check_violation then v_raised := true; end;

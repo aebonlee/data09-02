@@ -248,3 +248,17 @@ details.more > summary, .auto-box summary { cursor: pointer; font-weight: 600; }
 .news-main .excerpt { font-size: .9rem; }
 .news-item .btn-row { flex-shrink: 0; }
 @media (max-width: 640px) { .news-item { flex-direction: column; } }
+
+/* 2026-09-29 오후 — 기술 카드 목차·도움말 */
+.toc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 180px), 1fr)); gap: 8px; margin-bottom: 20px; }
+.toc-item { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); color: var(--text); text-decoration: none; font-weight: 600; word-break: keep-all; overflow-wrap: break-word; }
+.toc-item.empty { color: var(--muted); font-weight: 400; }
+.toc-item[aria-current="page"] { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+.toc-count { font-size: .85rem; white-space: nowrap; }
+.tech-list { display: grid; gap: 10px; }
+.tech-card { border: 1px solid var(--line); border-radius: var(--radius); padding: 10px 14px; }
+.tech-card summary { cursor: pointer; }
+.tech-card .title { font-weight: 700; }
+.tech-content { margin: 10px 0; }
+.help-box ol { padding-left: 1.3em; margin: 8px 0; }
+.help-box li { margin: 4px 0; word-break: keep-all; overflow-wrap: break-word; }
