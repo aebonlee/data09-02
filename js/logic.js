@@ -13,7 +13,7 @@
   'use strict';
   var C = (typeof module !== 'undefined' && module.exports) ? require('./config.js') : root.GTConfig;
 
-  function emptyDb() { return { items: [], accidents: [], techs: [] }; }
+  function emptyDb() { return { items: [], accidents: [], techs: [], news: [] }; }
   function clone(o) { return JSON.parse(JSON.stringify(o)); }
 
   // ── 날짜 ─────────────────────────────────────────────────────
@@ -380,6 +380,299 @@
     return { ok: true, db: out };
   }
 
+  // ── 3·4단계 한 번에 (2026-09-29 추가 요청: 평가·모범답안을 AI 가 자동으로) ──────
+  // 답안 분량 — 채점 기준 「분량」을 AI 가 어림하지 않고 실제 글자 수로 판단하도록 프롬프트에 넣습니다
+  function answerStats(it) {
+    var len = function (s) { return String(s || '').replace(/\s/g, '').length; };
+    var intro = len(it.ans_intro), body = len(it.ans_body), concl = len(it.ans_conclusion);
+    return { intro: intro, body: body, conclusion: concl, total: intro + body + concl };
+  }
+  var MARK_EVAL = '=====평가=====';
+  var MARK_MODEL = '=====모범답안=====';
+  // format: 'text'(채팅창에 붙여넣기용 — 구분자 두 줄) | 'json'(API 자동 모드 — JSON 한 덩어리)
+  function buildCombinedPrompt(it, format) {
+    var area = areaOf(it.area_id) || { name: '' };
+    var st = answerStats(it);
+    var lines = [
+      '가스기술사 필기시험 답안을 평가하고, 이어서 같은 문제의 모범답안을 써 주세요.',
+      '',
+      '할 일 1. 네 전문가 관점에서 차례로 평가 (관점마다 100점 만점으로 따로 점수)',
+      rolePromptBlock(),
+      '',
+      '모든 관점에 공통으로 적용할 가스기술사 답안 채점 기준',
+      C.GRADING_GUIDE.map(function (g) { return '- ' + g; }).join('\n'),
+      '',
+      '할 일 2. 모범답안',
+      '- 기술사 시험 답안 형식, A4 1~2쪽 분량',
+      '- [서론] [본론] [결론] 세 부분으로 나누고, 각 부분을 대괄호 머리줄로 시작해 주세요.',
+      '- 본론은 번호를 붙인 항목으로 쓰고, 핵심 키워드는 드러나게, 필요한 곳에 표나 글자로 그린 도식을 넣어 주세요.',
+      '- 평가에서 지적한 부족한 점을 모범답안이 채우도록 써 주세요.',
+      '',
+      '주의',
+      '- 법령·KGS 코드 조항 번호, 사고의 날짜·장소·피해 규모처럼 확인이 필요한 사실은 확실할 때만 쓰고, 확실하지 않으면 [확인 필요]라고 표시해 주세요.',
+      ''
+    ];
+    if (format === 'json') {
+      lines.push('답변 형식 — 아래 JSON 객체 하나만 출력하세요 (설명·코드블록 없이)',
+        JSON.stringify({
+          evaluations: C.ROLES.map(function (r) { return { role: r.label, score: 0, comment: '잘한 점, 부족한 점, 보완 방법 3~6줄' }; }),
+          summary: '가장 먼저 고칠 점 3가지와 총평',
+          model_answer: '[서론]\n…\n\n[본론]\n1. …\n\n[결론]\n…'
+        }, null, 2),
+        '- score 는 0~100 사이 정수입니다. role 은 위 네 관점 이름을 그대로 씁니다.');
+    } else {
+      lines.push('답변 형식 — 구분선 두 줄(' + MARK_EVAL + ', ' + MARK_MODEL + ')과 대괄호 머리줄을 그대로 써 주세요',
+        MARK_EVAL, evalFormatBlock(), '', MARK_MODEL, '[서론]', '…', '[본론]', '…', '[결론]', '…');
+    }
+    lines.push('', '---',
+      '영역: ' + area.name,
+      '문제: ' + it.question,
+      '',
+      '수험자 답안 (공백 뺀 글자 수: 서론 ' + st.intro + ' · 본론 ' + st.body + ' · 결론 ' + st.conclusion + ' · 합계 ' + st.total + '자)',
+      answerText(it));
+    return lines.join('\n');
+  }
+  // ```json … ``` 으로 감싸 오거나 앞뒤에 말이 붙어도 가장 바깥 { … } 를 찾아 읽습니다
+  function extractJson(text) {
+    var s = String(text || '');
+    var fence = s.match(/```(?:json)?\s*([\s\S]*?)```/i);
+    if (fence) s = fence[1];
+    var a = s.indexOf('{'), b = s.lastIndexOf('}');
+    if (a === -1 || b <= a) return null;
+    try { return JSON.parse(s.slice(a, b + 1)); } catch (e) { return null; }
+  }
+  function fromJson(obj) {
+    var res = { scores: {}, comments: {}, summary: '', total: null, missing: [], problems: [] };
+    var list = Array.isArray(obj.evaluations) ? obj.evaluations : [];
+    list.forEach(function (e) {
+      var role = roleByLabel(e && (e.role || e.label || e.name));
+      if (!role || res.scores[role.key] != null) return;
+      var v = Number(e.score);
+      if (e.score === '' || e.score == null || isNaN(v)) v = null;
+      else if (v < 0 || v > 100) { res.problems.push(role.label + ': 점수가 0~100 밖입니다'); v = null; }
+      else v = Math.round(v * 10) / 10;
+      res.scores[role.key] = v;
+      res.comments[role.key] = String(e.comment || e.evaluation || '').trim();
+    });
+    res.summary = String(obj.summary || obj[C.SUMMARY_LABEL] || '').trim();
+    C.ROLES.forEach(function (r) { if (res.scores[r.key] == null) res.missing.push(r.label); });
+    if (!res.summary) res.missing.push(C.SUMMARY_LABEL);
+    res.total = totalScore(res.scores);
+    return res;
+  }
+  // AI 답변(JSON 또는 구분선 텍스트) → { format, eval: parseEval 형태, model, problems }
+  // format: 'json' | 'marker' | 'plain'(구분선 없음 — 평가만 읽고 모범답안은 비움)
+  function parseCombined(text) {
+    var src = String(text || '').replace(/\r\n?/g, '\n');
+    var obj = extractJson(src);
+    if (obj && (obj.evaluations || obj.model_answer)) {
+      var ev = fromJson(obj);
+      return { format: 'json', eval: ev, model: String(obj.model_answer || '').trim(), problems: ev.problems.slice() };
+    }
+    var norm = function (s) { return s.replace(/[\s=*#-]/g, ''); };
+    var lines = src.split('\n');
+    var iEval = -1, iModel = -1;
+    lines.forEach(function (ln, i) {
+      var n = norm(ln);
+      if (iEval === -1 && n === norm(MARK_EVAL)) iEval = i;
+      else if (iModel === -1 && n === norm(MARK_MODEL)) iModel = i;
+    });
+    if (iModel !== -1) {
+      var evalText = lines.slice(iEval === -1 ? 0 : iEval + 1, iModel > iEval ? iModel : lines.length).join('\n');
+      var modelText = lines.slice(iModel + 1, iEval > iModel ? iEval : lines.length).join('\n').trim();
+      var ev2 = parseEval(evalText);
+      return { format: 'marker', eval: ev2, model: modelText, problems: ev2.problems.slice() };
+    }
+    var ev3 = parseEval(src);
+    return { format: 'plain', eval: ev3, model: '', problems: ev3.problems.concat(['「' + MARK_MODEL + '」 구분선을 찾지 못해 모범답안은 비워 두었습니다']) };
+  }
+  // 평가와 모범답안을 한 번에 저장 (평가가 완전할 때만 — 모범답안은 평가 뒤에만 열리는 규칙 유지)
+  function saveCombined(db, date, areaId, parsed, now) {
+    var r = saveEval(db, date, areaId, parsed.eval, now);
+    if (!r.ok) return r;
+    if (!String(parsed.model || '').trim()) return { ok: true, db: r.db, model: false };
+    var m = saveModel(r.db, date, areaId, parsed.model, now);
+    return m.ok ? { ok: true, db: m.db, model: true } : { ok: true, db: r.db, model: false };
+  }
+
+  // ── 자동 모드: OpenAI API 요청·응답 (키는 인자로만 받고 저장하지 않습니다) ──────
+  function buildOpenAIRequest(prompt, model) {
+    return {
+      model: model || C.AI.defaultModel,
+      temperature: 0.3,
+      response_format: { type: 'json_object' },
+      messages: [
+        { role: 'system', content: '당신은 가스기술사 필기시험 채점위원이자 모범답안 집필자입니다. 반드시 요청한 JSON 형식으로만 답합니다.' },
+        { role: 'user', content: prompt }
+      ]
+    };
+  }
+  // 응답 JSON → 본문 글자. 오류 응답이면 사람이 읽을 메시지를 담아 던집니다.
+  function extractOpenAIText(json, status) {
+    if (json && json.error) throw new Error((status ? status + ' ' : '') + (json.error.message || json.error.code || '알 수 없는 오류'));
+    var c = json && json.choices && json.choices[0] && json.choices[0].message && json.choices[0].message.content;
+    if (!c) throw new Error('응답에 내용이 없습니다');
+    return c;
+  }
+  function looksLikeApiKey(key) { return /^sk-[A-Za-z0-9_\-]{16,}$/.test(String(key || '').trim()); }
+  // 화면 표시용 — 앞 3글자와 끝 4글자만 보입니다
+  function maskKey(key) {
+    var k = String(key || '').trim();
+    if (!k) return '';
+    if (k.length <= 8) return '••••';
+    return k.slice(0, 3) + '••••••••' + k.slice(-4);
+  }
+
+  // ── 가스사고 기사 목록 (공개 RSS 메타데이터 + 사용자가 붙여 넣은 기사) ─────────
+  function decodeEntities(s) {
+    return String(s || '').replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1')
+      .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;|&apos;/g, "'")
+      .replace(/&nbsp;/g, ' ').replace(/&#(\d+);/g, function (m, n) { return String.fromCharCode(+n); })
+      .replace(/&amp;/g, '&');
+  }
+  function tagText(block, tag) {
+    var m = block.match(new RegExp('<' + tag + '(?:\\s[^>]*)?>([\\s\\S]*?)</' + tag + '>', 'i'));
+    return m ? decodeEntities(m[1]).trim() : '';
+  }
+  // 한국 시각(UTC+9) 기준 날짜·시각 문자열
+  function kstParts(d) {
+    var k = new Date(d.getTime() + 9 * 3600 * 1000);
+    var ds = k.getUTCFullYear() + '-' + pad(k.getUTCMonth() + 1) + '-' + pad(k.getUTCDate());
+    return { date: ds, datetime: ds + ' ' + pad(k.getUTCHours()) + ':' + pad(k.getUTCMinutes()) };
+  }
+  // 기사 날짜 읽기 — 2026-09-28 · 2026.9.28. · 2026/09/28 · 2026년 9월 28일 · RFC 822(RSS) 모두 → 'YYYY-MM-DD'
+  function parseNewsDate(s, now) {
+    var t = String(s || '').trim();
+    if (!t) return '';
+    var m = t.match(/(\d{4})\s*(?:[-.\/]|년)\s*(\d{1,2})\s*(?:[-.\/]|월)\s*(\d{1,2})/);
+    if (m) {
+      var d = parseDate(m[1] + '-' + m[2] + '-' + m[3]);
+      return d ? toDateStr(d) : '';
+    }
+    if (/[A-Za-z]{3},?\s+\d{1,2}\s+[A-Za-z]{3}\s+\d{4}/.test(t) || /^\d{4}-\d{2}-\d{2}T/.test(t)) {
+      var r = new Date(t);
+      return isNaN(r) ? '' : kstParts(r).date;
+    }
+    // 연도 없는 「9월 28일」은 올해로 보되, 미래가 되면 작년으로
+    var md = t.match(/(\d{1,2})\s*월\s*(\d{1,2})\s*일/);
+    if (md && now) {
+      var y = now.getFullYear();
+      var dd = parseDate(y + '-' + md[1] + '-' + md[2]);
+      if (dd && dd > now) dd = parseDate((y - 1) + '-' + md[1] + '-' + md[2]);
+      return dd ? toDateStr(dd) : '';
+    }
+    return '';
+  }
+  // Google 뉴스 제목은 「기사 제목 - 언론사」 꼴이라 끝의 언론사를 떼어 냅니다
+  function splitTitleSource(title, source) {
+    var t = String(title || '').trim();
+    if (source && t.slice(-(source.length + 3)) === ' - ' + source) return t.slice(0, -(source.length + 3)).trim();
+    return t;
+  }
+  // RSS 2.0 XML → [{title, link, date, published, source, origin:'rss', query}] (기사 본문은 읽지 않습니다)
+  function parseRss(xml, query) {
+    var out = [];
+    var re = /<item\b[^>]*>([\s\S]*?)<\/item>/gi, m;
+    while ((m = re.exec(String(xml || '')))) {
+      var b = m[1];
+      var source = tagText(b, 'source');
+      var link = tagText(b, 'link');
+      var title = splitTitleSource(tagText(b, 'title'), source);
+      var pub = tagText(b, 'pubDate');
+      var pd = pub ? new Date(pub) : null;
+      if (!title || !link) continue;
+      out.push({
+        title: title, link: link, source: source,
+        date: pd && !isNaN(pd) ? kstParts(pd).date : '',
+        published: pd && !isNaN(pd) ? kstParts(pd).datetime : '',
+        origin: 'rss', query: query || ''
+      });
+    }
+    return out;
+  }
+  // 붙여넣기 — 빈 줄로 나눈 덩어리마다 기사 하나. 주소(http…)·날짜가 있는 줄을 찾고, 남은 첫 줄이 제목, 나머지가 본문
+  function parseNewsPaste(text, now) {
+    var blocks = String(text || '').replace(/\r\n?/g, '\n').split(/\n\s*\n/);
+    var items = [], problems = [];
+    blocks.forEach(function (blk, i) {
+      var lines = blk.split('\n').map(function (x) { return x.trim(); }).filter(Boolean);
+      if (!lines.length) return;
+      var link = '', date = '', rest = [];
+      lines.forEach(function (ln) {
+        var u = ln.match(/https?:\/\/\S+/);
+        if (u && !link) { link = u[0].replace(/[)\]>.,]+$/, ''); var left = ln.replace(u[0], '').replace(/^(URL|주소|링크)\s*[:：]\s*/i, '').trim(); if (left) rest.push(left); return; }
+        var dt = !date && ln.length <= 40 ? parseNewsDate(ln.replace(/^(날짜|일자|입력|발행)\s*[:：]?\s*/, ''), now) : '';
+        if (dt) { date = dt; return; }
+        rest.push(ln);
+      });
+      var title = (rest.shift() || '').replace(/^(제목)\s*[:：]\s*/, '');
+      var body = rest.join('\n').replace(/^(본문|내용)\s*[:：]\s*/, '');
+      if (!date) { var inner = parseNewsDate(title + ' ' + body, now); if (inner) date = inner; }
+      if (!title) { problems.push((i + 1) + '번째 덩어리: 제목을 찾지 못해 건너뜀'); return; }
+      if (link && !/^https?:\/\/\S+$/i.test(link)) link = '';
+      if (!date) problems.push((i + 1) + '번째 「' + title.slice(0, 20) + '」: 날짜를 찾지 못했습니다');
+      items.push({ title: title, link: link, date: date, published: date, source: '', origin: 'paste', excerpt: excerpt(body) });
+    });
+    return { items: items, problems: problems };
+  }
+  // 본문 발췌 — 첫 문장들 위주로 n 자까지
+  function excerpt(text, n) {
+    n = n || 200;
+    var s = String(text || '').replace(/\s+/g, ' ').trim();
+    if (s.length <= n) return s;
+    var cut = s.slice(0, n);
+    var end = Math.max(cut.lastIndexOf('다. '), cut.lastIndexOf('. '));
+    return (end > n * 0.5 ? cut.slice(0, end + 1) : cut) + '…';
+  }
+  // 같은 기사 판단: 주소가 같거나, 제목 글자가 거의 같으면(언론사만 다른 전재 포함) 한 건으로 봅니다
+  function newsKey(n) { return normText(n.title).slice(0, 40); }
+  function mergeNews(lists, opts) {
+    opts = opts || {};
+    var all = [];
+    lists.forEach(function (l) { (l || []).forEach(function (n) { if (n && n.title) all.push(n); }); });
+    var byLink = {}, byTitle = {}, out = [];
+    all.forEach(function (n) {
+      var lk = String(n.link || '');
+      var tk = newsKey(n);
+      var hit = (lk && byLink[lk]) || byTitle[tk];
+      if (hit) {
+        // 먼저 들어온 쪽을 두되, 빈 칸(날짜·발췌·언론사)은 뒤의 것으로 채웁니다
+        ['date', 'published', 'source', 'excerpt', 'link'].forEach(function (k) { if (!hit[k] && n[k]) hit[k] = n[k]; });
+        return;
+      }
+      var c = clone(n);
+      out.push(c);
+      if (lk) byLink[lk] = c;
+      byTitle[tk] = c;
+    });
+    if (opts.now && opts.keepDays) {
+      var lim = toDateStr(new Date(opts.now.getTime() - opts.keepDays * 86400000));
+      out = out.filter(function (n) { return !n.date || n.date >= lim; });
+    }
+    out.sort(function (a, b) {
+      var x = a.published || a.date || '', y = b.published || b.date || '';
+      return x < y ? 1 : x > y ? -1 : 0; // 최신순, 날짜 없는 기사는 맨 뒤
+    });
+    if (opts.max) out = out.slice(0, opts.max);
+    return out;
+  }
+  // 기사 → 사고 카드 초안 (출처는 「미확인」으로 시작 — 원문 확인은 사용자가 체크)
+  function newsToCardDraft(n) {
+    return {
+      title: n.title, when: n.date ? n.date.slice(0, 7) : '', type: guessAccidentType(n.title + ' ' + (n.excerpt || '')),
+      overview: n.excerpt ? n.excerpt : '', src_title: n.title, src_org: n.source || '', src_url: n.link || '', src_checked: false
+    };
+  }
+  function guessAccidentType(s) {
+    s = String(s || '');
+    if (/폭발/.test(s)) return '폭발';
+    if (/화재|불이|불길/.test(s)) return '화재';
+    if (/누출|샘|유출/.test(s)) return '누출';
+    return '';
+  }
+  var NEWS_COLUMNS = [{ key: 'date', label: '날짜' }, { key: 'title', label: '제목' }, { key: 'source', label: '언론사' },
+    { key: 'link', label: 'URL' }, { key: 'excerpt', label: '발췌(붙여넣은 기사만)' }, { key: 'origin', label: '구분' }];
+
   // ── 학습 기록·영역별 현황 ─────────────────────────────────────
   function setSummaries(db) {
     var by = {};
@@ -602,7 +895,12 @@
     setSummaries: setSummaries, areaStats: areaStats,
     cardVerified: cardVerified, validateCard: validateCard, upsertCard: upsertCard, deleteCard: deleteCard,
     cardColumns: cardColumns, itemColumns: itemColumns, itemRows: itemRows,
-    toCsv: toCsv, dbToSheets: dbToSheets, sheetsToDb: sheetsToDb
+    toCsv: toCsv, dbToSheets: dbToSheets, sheetsToDb: sheetsToDb,
+    answerStats: answerStats, buildCombinedPrompt: buildCombinedPrompt, extractJson: extractJson,
+    parseCombined: parseCombined, saveCombined: saveCombined, MARK_EVAL: MARK_EVAL, MARK_MODEL: MARK_MODEL,
+    buildOpenAIRequest: buildOpenAIRequest, extractOpenAIText: extractOpenAIText, looksLikeApiKey: looksLikeApiKey, maskKey: maskKey,
+    parseNewsDate: parseNewsDate, parseRss: parseRss, parseNewsPaste: parseNewsPaste, excerpt: excerpt,
+    mergeNews: mergeNews, newsToCardDraft: newsToCardDraft, guessAccidentType: guessAccidentType, NEWS_COLUMNS: NEWS_COLUMNS
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.GTLogic = api;

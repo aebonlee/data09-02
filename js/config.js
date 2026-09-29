@@ -62,7 +62,33 @@
     '방폭', '고압가스 저장', '도시가스 안전', '기타'];
   var ACCIDENT_TYPES = ['누출', '화재', '폭발', '기타'];
 
+  // 가스기술사 답안 채점 기준 (2026-09-29 추가 요청 — 평가·모범답안 통합 프롬프트에 그대로 들어갑니다)
+  var GRADING_GUIDE = [
+    '구성: 서론(정의·개요) - 본론(번호 붙인 항목) - 결론(실무 시사점·의견) 세 부분이 갖춰졌는가',
+    '핵심 키워드: 문제가 요구한 핵심 용어·원리·기준을 빠짐없이 쓰고 눈에 띄게 드러냈는가',
+    '도해: 계통도·그래프·표 같은 그림 설명을 넣어 채점자가 한눈에 보게 했는가 (글자로 그린 도식도 인정)',
+    '분량: 답안지 기준 A4 1~2쪽(대략 1,000~2,500자)에 맞는가 — 너무 짧거나 길면 감점'
+  ];
+
+  // 「자동 모드」 — 사용자가 본인 OpenAI API 키를 넣으면 브라우저에서 직접 호출합니다.
+  // 키는 이 브라우저(localStorage)에만 저장하고 코드·리포에는 넣지 않습니다(공개 리포).
+  var AI = {
+    endpoint: 'https://api.openai.com/v1/chat/completions',
+    models: ['gpt-4o-mini', 'gpt-4.1-mini', 'gpt-4o', 'gpt-4.1'],
+    defaultModel: 'gpt-4o-mini'
+  };
+
+  // 사고 카드 「가스사고 기사」 — GitHub Actions 가 매일 받는 공개 RSS 검색어
+  var NEWS = {
+    queries: ['가스사고', '가스폭발', '가스누출'],
+    jsonPath: 'data/news.json',
+    pagesUrl: 'https://aebonlee.github.io/data09-02/',
+    keepDays: 365,  // 이보다 오래된 기사는 목록에서 뺍니다
+    maxItems: 500
+  };
+
   var api = {
+    GRADING_GUIDE: GRADING_GUIDE, AI: AI, NEWS: NEWS,
     AREAS: AREAS, ROLES: ROLES, SUMMARY_LABEL: SUMMARY_LABEL,
     ACCIDENT_FIELDS: ACCIDENT_FIELDS, TECH_FIELDS: TECH_FIELDS,
     TECH_CATEGORIES: TECH_CATEGORIES, ACCIDENT_TYPES: ACCIDENT_TYPES,

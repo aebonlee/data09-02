@@ -228,3 +228,23 @@ table.list tr.click:hover { background: #f2f7fa; }
   .print-item:first-child { page-break-before: auto; }
   .role-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+
+/* 2026-09-29 추가 — 자동 모드·사고 카드 탭·기사 목록 */
+.auto-box { border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 14px; margin-bottom: 16px; background: var(--accent-bg); }
+.auto-box h3 { margin: 0; }
+.ai-settings { display: grid; gap: 10px; margin-top: 10px; }
+.ai-settings code { background: var(--surface); padding: 1px 6px; border-radius: 4px; }
+details.more { margin-top: 16px; }
+details.more > summary, .auto-box summary { cursor: pointer; font-weight: 600; }
+.tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 16px; }
+.tabs a { padding: 8px 14px; border: 1px solid var(--line); border-radius: 999px; text-decoration: none; color: var(--text); background: var(--surface); font-weight: 600; }
+.tabs a[aria-current="page"] { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+.news-day h3 { margin: 16px 0 6px; font-size: 1rem; color: var(--muted); }
+.news-day ul { list-style: none; margin: 0; padding: 0; }
+.news-item { display: flex; gap: 12px; align-items: flex-start; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.news-main { display: flex; flex-direction: column; gap: 2px; min-width: 0; word-break: keep-all; overflow-wrap: break-word; }
+.news-main a { font-weight: 600; }
+.news-main .meta { color: var(--muted); font-size: .88rem; }
+.news-main .excerpt { font-size: .9rem; }
+.news-item .btn-row { flex-shrink: 0; }
+@media (max-width: 640px) { .news-item { flex-direction: column; } }

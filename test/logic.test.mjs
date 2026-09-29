@@ -210,4 +210,132 @@ test('예시 데이터: 「예시」 표시, 날짜·영역 중복 없음, 점�
   assert.equal(L.itemsOfDate(db, '2026-09-28').length, 0, '오늘은 비워 둠');
 });
 
+
+console.log('3·4단계 한 번에 (2026-09-29 추가 요청)');
+function submitted() {
+  let db = dbWith([{ area_id: 10, question: '저온 저장탱크의 단열 방식을 설명하시오.' }]);
+  const r = L.saveAnswer(db, D, 10, { intro: '서론입니다', body: '1. 진공단열\n2. 분말단열', conclusion: '결론' }, { now: NOW, submit: true });
+  assert.ok(r.ok); return r.db;
+}
+test('통합 프롬프트: 4관점·채점 기준(구성·키워드·도해·분량)·글자 수·두 형식', () => {
+  const it = L.findItem(submitted(), D, 10);
+  const t = L.buildCombinedPrompt(it, 'text');
+  for (const k of ['서론', '핵심 키워드', '도해', '분량', L.MARK_EVAL, L.MARK_MODEL, '합계 ' + L.answerStats(it).total + '자', '[확인 필요]']) assert.ok(t.includes(k), k);
+  C.ROLES.forEach(r => assert.ok(t.includes('[' + r.label + ']')));
+  const j = L.buildCombinedPrompt(it, 'json');
+  assert.ok(j.includes('"model_answer"') && !j.includes(L.MARK_EVAL));
+  assert.equal(L.answerStats(it).total, '서론입니다'.length + '1.진공단열2.분말단열'.length + 2);
+});
+const JSON_ANSWER = '설명입니다.\n```json\n' + JSON.stringify({
+  evaluations: [{ role: '가스기술사', score: 70, comment: '대책 부족' }, { role: '공학박사', score: '80', comment: '원리 정확' },
+    { role: '채점위원', score: 65, comment: '결론 약함' }, { role: '전문기자', score: 90, comment: '동향 좋음' }],
+  summary: '결론 보강', model_answer: '[서론]\n정의\n[본론]\n1. 항목\n[결론]\n의견'
+}) + '\n```';
+test('응답 읽기: JSON(코드블록·앞말 포함) → 점수·의견·모범답안', () => {
+  const p = L.parseCombined(JSON_ANSWER);
+  assert.equal(p.format, 'json');
+  assert.deepEqual(p.eval.scores, { engineer: 70, doctor: 80, grader: 65, reporter: 90 });
+  assert.equal(p.eval.total, 76.3);
+  assert.equal(p.eval.comments.grader, '결론 약함');
+  assert.equal(p.eval.missing.length, 0);
+  assert.ok(p.model.startsWith('[서론]'));
+});
+test('응답 읽기: 구분선 텍스트 → 평가·모범답안 분배, 점수 범위 밖·빠진 관점은 알림', () => {
+  const txt = '====평가====\n' + EVAL_TEXT + '\n\n**=====모범답안=====**\n[서론]\n가\n[본론]\n나\n[결론]\n다';
+  const p = L.parseCombined(txt);
+  assert.equal(p.format, 'marker');
+  assert.equal(p.eval.total, 76.3);
+  assert.equal(p.eval.summary, '결론을 보강하십시오.');
+  assert.ok(p.model.startsWith('[서론]') && p.model.endsWith('다'));
+  assert.ok(!p.eval.comments.reporter.includes('모범답안'));
+  const bad = L.parseCombined(JSON.stringify({ evaluations: [{ role: '가스기술사', score: 130 }], model_answer: 'x' }));
+  assert.ok(bad.problems.length === 1 && bad.eval.missing.includes('공학박사') && bad.eval.total === null);
+  const plain = L.parseCombined(EVAL_TEXT);
+  assert.equal(plain.format, 'plain');
+  assert.equal(plain.model, '');
+  assert.equal(plain.eval.total, 76.3);
+});
+test('한 번에 저장: 평가가 완전할 때만, 모범답안은 평가와 함께', () => {
+  const db = submitted();
+  const r = L.saveCombined(db, D, 10, L.parseCombined(JSON_ANSWER), NOW);
+  assert.ok(r.ok && r.model);
+  const it = L.findItem(r.db, D, 10);
+  assert.equal(L.stageOf(it), 'done');
+  assert.equal(it.score_total, 76.3);
+  const miss = L.saveCombined(db, D, 10, L.parseCombined('{"evaluations":[],"model_answer":"[서론]"}'), NOW);
+  assert.equal(miss.ok, false);
+  assert.equal(L.stageOf(L.findItem(db, D, 10)), 'submitted', '원본 불변');
+  const draftOnly = L.saveCombined(dbWith([{ area_id: 1, question: 'q' }]), D, 1, L.parseCombined(JSON_ANSWER), NOW);
+  assert.equal(draftOnly.code, 'not_submitted');
+});
+test('자동 모드: 요청 본문·응답 꺼내기·키 모양·가림 표시', () => {
+  const req = L.buildOpenAIRequest('P');
+  assert.equal(req.model, C.AI.defaultModel);
+  assert.equal(req.response_format.type, 'json_object');
+  assert.equal(req.messages[1].content, 'P');
+  assert.ok(!JSON.stringify(req).includes('sk-'), '요청 본문에 키가 들어가지 않음');
+  assert.equal(L.extractOpenAIText({ choices: [{ message: { content: '{}' } }] }), '{}');
+  assert.throws(() => L.extractOpenAIText({ error: { message: 'Incorrect API key' } }, 401), /401 Incorrect API key/);
+  assert.throws(() => L.extractOpenAIText({ choices: [] }), /내용이 없습니다/);
+  assert.ok(L.looksLikeApiKey('sk-proj-abcdefghijklmnop1234'));
+  assert.ok(!L.looksLikeApiKey('abc') && !L.looksLikeApiKey('sk-short'));
+  const m = L.maskKey('sk-proj-abcdefghijklmnop1234');
+  assert.ok(m.startsWith('sk-') && m.endsWith('1234') && !m.includes('abcdef'));
+});
+
+console.log('가스사고 기사 목록 (2026-09-29 추가 요청)');
+const RSS = `<?xml version="1.0"?><rss><channel><title>x</title>
+<item><title>충전소 가스 누출로 주민 대피 - 가스신문</title><link>https://news.example/a?x=1&amp;y=2</link><pubDate>Mon, 28 Sep 2026 18:24:00 GMT</pubDate><description>&lt;a&gt;본문 아님&lt;/a&gt;</description><source url="https://gas.example">가스신문</source></item>
+<item><title><![CDATA[공장 폭발 사고 - 한 - 뉴스]]></title><link>https://news.example/b</link><pubDate>Sun, 27 Sep 2026 01:00:00 GMT</pubDate><source url="https://n.example">뉴스</source></item>
+</channel></rss>`;
+test('RSS 읽기: 제목에서 언론사 떼기, 한국 시각 날짜, 엔터티·CDATA, 본문 저장 안 함', () => {
+  const a = L.parseRss(RSS, '가스사고');
+  assert.equal(a.length, 2);
+  assert.deepEqual(a[0], { title: '충전소 가스 누출로 주민 대피', link: 'https://news.example/a?x=1&y=2', source: '가스신문', date: '2026-09-29', published: '2026-09-29 03:24', origin: 'rss', query: '가스사고' });
+  assert.equal(a[1].title, '공장 폭발 사고 - 한');
+  assert.equal(a[1].date, '2026-09-27');
+  assert.ok(!('excerpt' in a[0]) && !JSON.stringify(a).includes('본문 아님'));
+});
+test('기사 날짜 읽기: 여러 표기 → YYYY-MM-DD, 연도 없으면 미래가 안 되게', () => {
+  assert.equal(L.parseNewsDate('2026.9.3.'), '2026-09-03');
+  assert.equal(L.parseNewsDate('입력 2026-09-28 10:21'), '2026-09-28');
+  assert.equal(L.parseNewsDate('2026년 09월 28일'), '2026-09-28');
+  assert.equal(L.parseNewsDate('2026/02/30'), '');
+  assert.equal(L.parseNewsDate('Mon, 28 Sep 2026 18:24:00 GMT'), '2026-09-29');
+  assert.equal(L.parseNewsDate('12월 1일', NOW), '2025-12-01');
+  assert.equal(L.parseNewsDate('9월 1일', NOW), '2026-09-01');
+  assert.equal(L.parseNewsDate('어제'), '');
+});
+test('붙여넣기: 덩어리별 제목·날짜·주소·발췌, 날짜 없으면 알림', () => {
+  const txt = '제목: 주택 LPG 폭발로 2명 부상\n2026.09.20\nhttps://news.example/c\n본문: 20일 오후 주택에서 폭발이 있었다. 경찰은 원인을 조사 중이다.\n\n' +
+    '가스 누출 사고 예방 캠페인\n링크 https://news.example/d.\n\n\n\n날짜 없는 기사\n내용만 있다';
+  const r = L.parseNewsPaste(txt, NOW);
+  assert.equal(r.items.length, 3);
+  assert.deepEqual([r.items[0].title, r.items[0].date, r.items[0].link], ['주택 LPG 폭발로 2명 부상', '2026-09-20', 'https://news.example/c']);
+  assert.ok(r.items[0].excerpt.startsWith('20일 오후'));
+  assert.equal(r.items[1].link, 'https://news.example/d');
+  assert.equal(r.items[2].date, '');
+  assert.equal(r.problems.length, 2);
+  assert.ok(L.excerpt('가'.repeat(500), 100).length <= 101);
+});
+test('합치기: 주소·제목 중복 제거, 빈 칸 채움, 최신순, 오래된 기사 제외, 개수 제한', () => {
+  const feed = L.parseRss(RSS, 'q');
+  const paste = [{ title: '충전소 가스 누출로 주민 대피', link: '', date: '2026-09-29', excerpt: '발췌', origin: 'paste' },
+    { title: '옛 사고', link: 'https://o', date: '2020-01-01', origin: 'paste' },
+    { title: '날짜 모름', link: 'https://z', date: '', origin: 'paste' },
+    { title: '공장 폭발 사고 - 한', link: 'https://news.example/b', date: '2026-09-27', origin: 'rss' }];
+  const m = L.mergeNews([feed, paste], { now: NOW, keepDays: 365 });
+  assert.deepEqual(m.map(n => n.title), ['충전소 가스 누출로 주민 대피', '공장 폭발 사고 - 한', '날짜 모름']);
+  assert.equal(m[0].excerpt, '발췌');
+  assert.equal(feed[0].excerpt, undefined, '입력 불변');
+  assert.equal(L.mergeNews([feed, paste], { max: 1 }).length, 1);
+});
+test('기사 → 사고 카드 초안: 유형 추정, 출처는 미확인으로 시작, 카드 검증 통과', () => {
+  const d = L.newsToCardDraft({ title: '공장 폭발 사고', link: 'https://a.example', date: '2026-09-27', source: '뉴스' });
+  assert.deepEqual([d.type, d.when, d.src_url, d.src_checked], ['폭발', '2026-09', 'https://a.example', false]);
+  const r = L.upsertCard(L.emptyDb(), 'accident', d, NOW);
+  assert.ok(r.ok && !L.cardVerified(r.db.accidents[0]));
+  assert.equal(L.guessAccidentType('배관 가스 누출'), '누출');
+});
+
 console.log(process.exitCode ? '\n실패가 있습니다.' : '\n전체 ' + passed + '개 통과');

@@ -24,7 +24,16 @@
     } catch (e) { /* 깨진 값은 무시하고 빈 DB */ }
     return db;
   }
+  // 자동 모드 설정 — API 키는 DB(엑셀 내보내기)와 따로 두어 파일로 새어 나가지 않게 합니다
+  var KEY_AI_KEY = 'data09-02.openai_key', KEY_AI_MODEL = 'data09-02.openai_model';
   root.GTStore = {
+    getAi: function () {
+      var C = root.GTConfig.AI;
+      var model = get(KEY_AI_MODEL);
+      return { key: get(KEY_AI_KEY) || '', model: C.models.indexOf(model) !== -1 ? model : C.defaultModel };
+    },
+    setAiKey: function (k) { if (k) set(KEY_AI_KEY, k); else del(KEY_AI_KEY); },
+    setAiModel: function (m) { set(KEY_AI_MODEL, m); },
     loadDb: loadDb,
     saveDb: function (db) { set(KEY_DB, JSON.stringify(db)); },
     clearDb: function () { del(KEY_DB); },

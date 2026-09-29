@@ -6,6 +6,7 @@
  *   #/print/<날짜>           인쇄용 (PDF 저장)
  *   #/stats                 영역별 현황 (표·그래프, CSV)
  *   #/accidents[/<id|new>]  사고 카드 (5항목 + 출처)
+ *   #/accidents/news        가스사고 기사 목록 (날짜순 — 자동 수집 + 붙여넣기)
  *   #/techs[/<id|new>]      기술 카드 (6항목 + 출처)
  *   #/prompts               4관점 평가 프롬프트 세트
  *   #/data                  데이터 (예시 데이터·엑셀 내보내기/가져오기)
@@ -350,7 +351,9 @@
         if (r.code === 'empty_body') showErrors(form, [{ field: 'body', code: 'required' }]);
         return;
       }
-      save(r.db); toast('답안을 제출했습니다. 3단계에서 AI 평가를 받으십시오.'); render();
+      save(r.db);
+      if (S.getAi().key) { toast('답안을 제출했습니다. AI 가 평가와 모범답안을 작성합니다.'); runAuto(L.findItem(db, it.set_date, it.area_id)); }
+      else { toast('답안을 제출했습니다. 3단계에서 AI 평가를 받으십시오.'); render(); }
     });
     add(sec, form);
     return sec;
@@ -366,19 +369,82 @@
       h('div', { class: 'head' }, h('span', { class: 'who' }, '종합 (네 관점 평균)'), h('span', { class: 'score' }, fmt(it.score_total) + '점')),
       h('div', { class: 'pre' }, it.cmt_total || '')));
   }
+  // ── 3·4단계 자동 작성 (2026-09-29 추가 요청) ──────────────
+  // 자동 모드: 본인 OpenAI 키가 있으면 답안 제출 직후 브라우저에서 바로 호출해 평가·모범답안을 채웁니다.
+  // 키가 없으면 통합 프롬프트 한 번 복사 → 답 붙여넣기 → 3·4단계로 나눠 채웁니다.
+  var autoState = {}; // '날짜/영역' → { busy, error, parsed }
+  function autoKey(it) { return it.set_date + '/' + it.area_id; }
+  function runAuto(it) {
+    var ai = S.getAi();
+    if (!ai.key) return;
+    var k = autoKey(it), route = '#/q/' + it.set_date + '/' + it.area_id;
+    autoState[k] = { busy: true };
+    if (location.hash === route) render();
+    var ctrl = typeof AbortController === 'function' ? new AbortController() : null;
+    var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, 120000);
+    fetch(C.AI.endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + ai.key },
+      body: JSON.stringify(L.buildOpenAIRequest(L.buildCombinedPrompt(it, 'json'), ai.model)),
+      signal: ctrl ? ctrl.signal : undefined
+    }).then(function (res) {
+      return res.json().catch(function () { return { error: { message: '응답을 읽지 못했습니다' } }; })
+        .then(function (j) { return L.extractOpenAIText(j, res.ok ? 0 : res.status); });
+    }).then(function (text) {
+      var parsed = L.parseCombined(text);
+      var cur = L.findItem(db, it.set_date, it.area_id);
+      if (!cur || cur.eval_at) { delete autoState[k]; return; } // 그 사이 직접 저장했으면 덮어쓰지 않습니다
+      var r = L.saveCombined(db, it.set_date, it.area_id, parsed, now());
+      if (r.ok) {
+        save(r.db); delete autoState[k];
+        toast('AI 가 평가' + (r.model ? '와 모범답안' : '') + '을 작성했습니다.');
+      } else {
+        autoState[k] = { parsed: parsed, error: '받은 답변에서 빠진 항목이 있어 저장하지 않았습니다. 아래에서 확인해 채우십시오.' };
+      }
+    }).catch(function (e) {
+      var msg = e && e.name === 'AbortError' ? '2분 안에 응답이 오지 않았습니다.' : (e && e.message) || String(e);
+      if (/Failed to fetch|NetworkError|Load failed/i.test(msg)) msg = '네트워크에 연결하지 못했습니다(인터넷 연결·회사 방화벽을 확인하십시오).';
+      autoState[k] = { error: 'AI 자동 작성 실패 — ' + msg + ' 아래 통합 프롬프트로 이어서 할 수 있습니다.' };
+    }).then(function () {
+      clearTimeout(timer);
+      if (location.hash === route) render();
+    });
+  }
+  function aiSettingsBox(onChange) {
+    var ai = S.getAi();
+    var box = h('div', { class: 'ai-settings' });
+    var keyInput = h('input', { type: 'password', autocomplete: 'off', spellcheck: 'false', placeholder: 'sk-로 시작하는 키', 'aria-label': 'OpenAI API 키' });
+    var model = h('select', { 'aria-label': '모델' }, C.AI.models.map(function (m) { return h('option', { value: m, selected: m === ai.model }, m + (m === C.AI.defaultModel ? ' (기본·저렴)' : '')); }));
+    model.addEventListener('change', function () { S.setAiModel(model.value); toast('모델을 ' + model.value + ' 로 바꿨습니다.'); });
+    add(box,
+      h('p', null, ai.key ? h('span', null, '자동 모드 켜짐 · 저장된 키 ', h('code', null, L.maskKey(ai.key))) : '자동 모드 꺼짐 · 키가 없으면 통합 프롬프트(복사·붙여넣기)로 진행합니다.'),
+      h('div', { class: 'form-grid' },
+        field(ai.key ? '새 키로 바꾸기' : 'OpenAI API 키 (선택)', keyInput, { hint: '이 브라우저(localStorage)에만 저장되고 엑셀 내보내기·리포에는 들어가지 않습니다. 여러 사람이 쓰는 PC에서는 넣지 마십시오.' }),
+        field('모델', model, { hint: '요금은 본인 OpenAI 계정에 청구됩니다. 답안 1건에 보통 수 원~수십 원 수준입니다(모델·분량에 따라 다름).' })),
+      h('div', { class: 'btn-row' },
+        h('button', { type: 'button', class: 'btn btn-primary', onclick: function () {
+          var v = keyInput.value.trim();
+          if (!L.looksLikeApiKey(v)) { toast('키 모양이 아닙니다. sk- 로 시작하는 키를 붙여 넣으십시오.', true); return; }
+          S.setAiKey(v); keyInput.value = ''; toast('키를 저장했습니다. 답안을 제출하면 AI 가 3·4단계를 작성합니다.'); (onChange || render)();
+        } }, '키 저장'),
+        ai.key ? h('button', { type: 'button', class: 'btn btn-danger', onclick: function () {
+          S.setAiKey(''); toast('키를 지웠습니다.'); (onChange || render)();
+        } }, '키 삭제') : null));
+    return box;
+  }
   function evalSection(it) {
     var sec = h('section', { class: 'card' }, h('h2', null, '3단계 · 4관점 AI 평가'));
-    if (!it.ans_submitted_at) { add(sec, h('p', { class: 'locked' }, '답안을 제출하면 평가 프롬프트가 열립니다.')); return sec; }
+    if (!it.ans_submitted_at) { add(sec, h('p', { class: 'locked' }, '답안을 제출하면 AI 평가가 열립니다. 자동 모드(본인 OpenAI 키)를 켜 두면 제출하자마자 AI 가 3·4단계를 작성합니다.')); return sec; }
     if (it.eval_at) {
       add(sec, h('p', { class: 'note' }, '평가 저장: ' + it.eval_at), roleCards(it));
       return sec;
     }
-    var paste = h('textarea', { class: 'tall', placeholder: '[가스기술사] 점수: 75\n평가: …\n\n[공학박사] 점수: …' });
+    var ai = S.getAi();
+    var stt = autoState[autoKey(it)] || {};
     var out = h('div');
-    function doParse() {
+    // 평가 확인·수정 칸 — pendingModel 이 있으면 저장할 때 모범답안도 함께 저장합니다
+    function showForm(p, pendingModel) {
       out.textContent = '';
-      var p = L.parseEval(paste.value);
-      // 확인·수정용 칸
       var form = h('form', { class: 'form-grid' });
       L.ROLES.forEach(function (r) {
         add(form, field(r.label + ' 점수 (0~100)', h('input', { name: 's_' + r.key, type: 'number', min: '0', max: '100', step: '0.1', value: p.scores[r.key] == null ? '' : p.scores[r.key] }), { name: 's_' + r.key }),
@@ -386,8 +452,10 @@
         form.elements['c_' + r.key].value = p.comments[r.key] || '';
       });
       add(form, field('종합의견', h('textarea', { name: 'summary', rows: '4' }), { span: true }),
-        h('div', { class: 'btn-row span-all' }, h('button', { type: 'submit', class: 'btn btn-primary' }, '평가 저장')));
+        pendingModel != null ? field('4단계 모범답안 (함께 저장)', h('textarea', { name: 'model', class: 'tall' }), { span: true, name: 'model', hint: '비워 두면 평가만 저장하고 4단계는 나중에 채웁니다.' }) : null,
+        h('div', { class: 'btn-row span-all' }, h('button', { type: 'submit', class: 'btn btn-primary' }, pendingModel != null ? '평가·모범답안 저장' : '평가 저장')));
       form.elements.summary.value = p.summary;
+      if (pendingModel != null) form.elements.model.value = pendingModel;
       form.addEventListener('submit', function (e) {
         e.preventDefault();
         var parsed = { scores: {}, comments: {}, summary: form.elements.summary.value };
@@ -400,9 +468,10 @@
           parsed.comments[r.key] = form.elements['c_' + r.key].value;
         });
         if (errs.length) { showErrors(form, errs); return; }
-        var r = L.saveEval(db, it.set_date, it.area_id, parsed, now());
+        var r = L.saveCombined(db, it.set_date, it.area_id, { eval: parsed, model: form.elements.model ? form.elements.model.value : '' }, now());
         if (!r.ok) { toast('저장하지 못했습니다(' + r.code + ').', true); return; }
-        save(r.db); toast('평가를 저장했습니다. 4단계에서 모범답안을 여십시오.'); render();
+        delete autoState[autoKey(it)];
+        save(r.db); toast(r.model ? '평가와 모범답안을 저장했습니다.' : '평가를 저장했습니다. 4단계에서 모범답안을 여십시오.'); render();
       });
       var warn = p.missing.length || p.problems.length;
       add(out, warn ? h('div', { class: 'alert warn' }, h('ul', null,
@@ -410,12 +479,37 @@
         p.problems.map(function (x) { return h('li', null, x); }))) : h('div', { class: 'alert info' }, '네 관점 점수와 종합의견을 모두 읽었습니다. 확인 후 저장하십시오.'),
       form);
     }
-    add(sec, 
-      promptPanel('평가 프롬프트', L.buildEvalPrompt(it), '문제와 제출한 답안, 네 관점의 평가 기준, 답변 형식이 들어 있습니다. 종합 점수는 네 관점 점수의 평균으로 계산합니다.'),
-      h('div', { class: 'ai-step' }, h('h3', null, 'AI 답변 붙여넣기'), field('AI 답변', paste),
-        h('div', { class: 'btn-row' }, h('button', { type: 'button', class: 'btn', onclick: doParse }, '관점별로 나누기'),
-          h('button', { type: 'button', class: 'btn', onclick: function () { paste.value = ''; doParse(); } }, '직접 입력'))),
-      out);
+    // 자동 모드 상태
+    var auto = h('div', { class: 'ai-step auto-box' }, h('h3', null, '자동 모드 (본인 OpenAI API 키)'));
+    if (stt.busy) add(auto, h('p', { class: 'alert info', role: 'status' }, 'AI 가 평가와 모범답안을 작성하고 있습니다. 보통 20초~1분 걸립니다. 이 화면을 벗어나도 끝나면 저장됩니다.'));
+    else if (ai.key) add(auto, h('p', { class: 'note' }, '모델 ' + ai.model + ' · 키 ' + L.maskKey(ai.key)),
+      h('div', { class: 'btn-row' }, h('button', { type: 'button', class: 'btn btn-primary', onclick: function () { runAuto(it); } }, stt.error ? 'AI 로 다시 작성' : 'AI 로 평가·모범답안 작성')));
+    else add(auto, h('p', { class: 'note' }, '키를 넣어 두면 답안을 제출할 때 AI 가 3단계 평가와 4단계 모범답안을 바로 작성합니다. 키가 없어도 아래 「통합 프롬프트」로 한 번에 진행할 수 있습니다.'));
+    if (stt.error) add(auto, h('div', { class: 'alert warn' }, stt.error));
+    add(auto, h('details', null, h('summary', null, ai.key ? '키·모델 설정' : '키 넣기 (선택)'), aiSettingsBox()));
+
+    // 통합 프롬프트 (키 없이 한 번에)
+    var paste = h('textarea', { class: 'tall', placeholder: L.MARK_EVAL + '\n[가스기술사] 점수: 75\n평가: …\n…\n' + L.MARK_MODEL + '\n[서론]\n…' });
+    var combined = h('div', { class: 'ai-step' },
+      promptPanel('통합 프롬프트 — 평가 + 모범답안 한 번에', L.buildCombinedPrompt(it, 'text'), '복사해 ChatGPT·Claude 등에 붙여 넣고, 받은 답변 전체를 아래에 붙여 넣으십시오. 3단계(네 관점 점수·의견)와 4단계(모범답안)로 나눠 채웁니다. 채점 기준(구성·핵심 키워드·도해·분량)과 답안 글자 수가 들어 있습니다.'),
+      field('AI 답변 전체', paste, { hint: '구분선(' + L.MARK_EVAL + ' / ' + L.MARK_MODEL + ') 형식이나 JSON 형식 모두 읽습니다.' }),
+      h('div', { class: 'btn-row' },
+        h('button', { type: 'button', class: 'btn btn-primary', onclick: function () {
+          var c = L.parseCombined(paste.value);
+          c.eval.problems = c.problems;
+          showForm(c.eval, c.model);
+        } }, '3·4단계로 나누기'),
+        h('button', { type: 'button', class: 'btn', onclick: function () { showForm(L.parseEval(''), ''); } }, '직접 입력')));
+
+    // 기존 방식 (평가만 따로)
+    var paste2 = h('textarea', { class: 'tall', placeholder: '[가스기술사] 점수: 75\n평가: …\n\n[공학박사] 점수: …' });
+    var separate = h('details', { class: 'more' }, h('summary', null, '평가만 따로 받기 (이전 방식)'),
+      promptPanel('평가 프롬프트', L.buildEvalPrompt(it), '문제와 제출한 답안, 네 관점의 평가 기준, 답변 형식이 들어 있습니다. 모범답안은 평가 저장 뒤 4단계에서 따로 받습니다.'),
+      field('AI 답변', paste2),
+      h('div', { class: 'btn-row' }, h('button', { type: 'button', class: 'btn', onclick: function () { showForm(L.parseEval(paste2.value)); } }, '관점별로 나누기')));
+
+    if (stt.parsed) showForm(stt.parsed.eval, stt.parsed.model);
+    add(sec, h('p', { class: 'note' }, '종합 점수는 네 관점 점수의 평균으로 계산합니다.'), auto, stt.busy ? null : combined, stt.busy ? null : separate, out);
     return sec;
   }
 
@@ -573,9 +667,15 @@
   function verifyBadge(c) {
     return L.cardVerified(c) ? h('span', { class: 'badge verified' }, '출처 확인') : h('span', { class: 'badge unverified' }, '미확인');
   }
+  function accidentTabs(cur) {
+    return h('nav', { class: 'tabs', 'aria-label': '사고 카드 메뉴' },
+      h('a', { href: '#/accidents', 'aria-current': cur === 'cards' ? 'page' : null }, '사고 카드'),
+      h('a', { href: '#/accidents/news', 'aria-current': cur === 'news' ? 'page' : null }, '가스사고 기사 (날짜순)'));
+  }
   function viewCards(kind) {
     var K = KIND[kind];
     var list = db[K.key];
+    if (kind === 'accident') add(main, accidentTabs('cards'));
     add(main, h('div', { class: 'page-head' }, h('h1', null, K.name),
       h('div', { class: 'btn-row' },
         h('button', { type: 'button', class: 'btn', disabled: list.length ? null : true, onclick: function () {
@@ -598,7 +698,8 @@
   }
   function viewCardForm(kind, id) {
     var K = KIND[kind];
-    var c = id === 'new' ? {} : db[K.key].filter(function (x) { return x.id === id; })[0];
+    var c = id === 'new' ? (kind === 'accident' && cardDraft ? cardDraft : {}) : db[K.key].filter(function (x) { return x.id === id; })[0];
+    if (id === 'new') cardDraft = null;
     if (!c) { add(main, h('p', null, '카드를 찾지 못했습니다.')); return; }
     var areas = String(c.areas || '').split(/[;,]/).map(function (x) { return x.trim(); });
     var form = h('form', { class: 'form-grid' },
@@ -637,7 +738,144 @@
       save(r.db); toast('저장했습니다 (' + r.id + ').'); go(K.route);
     });
     add(main, h('div', { class: 'page-head' }, h('h1', null, c.id ? K.name + ' ' + c.id : '새 ' + K.name), c.id ? verifyBadge(c) : null),
+      !c.id && c.src_url ? h('div', { class: 'alert info' }, '기사 목록에서 가져온 초안입니다. 기사 제목·날짜·주소만 채웠습니다. 기사와 공공기관 보고서 원문을 확인하고 5항목을 채운 뒤, 확인했으면 아래 체크를 켜십시오.') : null,
       h('section', { class: 'card' }, form));
+  }
+
+  // ── 가스사고 기사 (2026-09-29 추가 요청) ─────────────────
+  // 정적 웹은 뉴스 사이트를 직접 긁을 수 없어(CORS) 세 갈래로 모읍니다.
+  //  ① GitHub Actions 가 매일 받아 두는 data/news.json (제목·링크·날짜·언론사, 본문 없음)
+  //  ② 공개 RSS 직접 불러오기 시도 (대부분 브라우저가 막음 — 막히면 안내)
+  //  ③ 사용자가 기사 제목·날짜·주소·본문을 붙여 넣기 (이 브라우저에만 저장)
+  var cardDraft = null;
+  var newsFeed = { status: 'idle', items: [], updated: '', error: '' };
+  var newsFilter = { q: '', days: '90', origin: '' };
+  function isFileProtocol() { return location.protocol === 'file:'; }
+  function loadNewsFeed(force) {
+    if (isFileProtocol()) { newsFeed = { status: 'file', items: [], updated: '', error: '' }; return; }
+    if (newsFeed.status === 'loading' || (newsFeed.status === 'ok' && !force)) return;
+    newsFeed = { status: 'loading', items: newsFeed.items, updated: newsFeed.updated, error: '' };
+    fetch(C.NEWS.jsonPath + '?t=' + Date.now(), { cache: 'no-store' })
+      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(function (j) { newsFeed = { status: 'ok', items: Array.isArray(j.items) ? j.items : [], updated: j.updated_at || '', error: '' }; })
+      .catch(function (e) { newsFeed = { status: 'error', items: [], updated: '', error: e.message || String(e) }; })
+      .then(function () { if (location.hash === '#/accidents/news') render(); });
+  }
+  function tryDirectRss(box) {
+    var q = C.NEWS.queries[0];
+    var url = 'https://news.google.com/rss/search?q=' + encodeURIComponent(q) + '&hl=ko&gl=KR&ceid=KR:ko';
+    box.textContent = '';
+    box.appendChild(h('p', { class: 'note' }, '불러오는 중…'));
+    fetch(url).then(function (r) { return r.text(); }).then(function (xml) {
+      var list = L.parseRss(xml, q);
+      if (!list.length) throw new Error('기사 0건');
+      newsFeed.items = L.mergeNews([list, newsFeed.items]);
+      newsFeed.status = 'ok';
+      toast('RSS 에서 ' + list.length + '건을 불러왔습니다(이번 화면에만 표시).');
+      render();
+    }).catch(function () {
+      box.textContent = '';
+      box.appendChild(h('div', { class: 'alert warn' }, '브라우저 보안 규칙(CORS) 때문에 이 화면에서 뉴스 RSS 를 직접 읽지 못했습니다. 정상입니다 — 대신 GitHub 가 매일 아침 받아 두는 목록(위)을 쓰고, 빠진 기사는 아래 「기사 붙여넣기」로 넣으십시오.'));
+    });
+  }
+  function viewNews() {
+    loadNewsFeed(false);
+    add(main, accidentTabs('news'),
+      h('div', { class: 'page-head' }, h('h1', null, '가스사고 기사 목록')),
+      h('div', { class: 'alert info' }, '공개 뉴스 검색(RSS)에서 「' + C.NEWS.queries.join('·') + '」 기사의 제목·날짜·언론사·링크를 날짜순으로 모읍니다. 기사 본문은 저장하지 않으니 링크로 원문을 읽으십시오. 기사는 1차 출처가 아닙니다 — 사고 카드로 옮길 때는 공공기관 보고서로 사실을 확인하십시오.'));
+
+    var stat = h('div');
+    if (newsFeed.status === 'file') {
+      add(stat, h('div', { class: 'alert warn' }, '이 파일을 컴퓨터에서 바로 열면(file://) 브라우저가 기사 목록 파일 읽기를 막습니다. 자동 수집 목록은 온라인 주소에서 보십시오: ',
+        h('a', { href: C.NEWS.pagesUrl + '#/accidents/news', target: '_blank', rel: 'noopener' }, C.NEWS.pagesUrl), ' · 아래 「기사 붙여넣기」는 여기서도 됩니다.'));
+    } else if (newsFeed.status === 'loading' || newsFeed.status === 'idle') {
+      add(stat, h('p', { class: 'note', role: 'status' }, '자동 수집 목록을 불러오는 중…'));
+    } else if (newsFeed.status === 'error') {
+      add(stat, h('div', { class: 'alert warn' }, '자동 수집 목록(' + C.NEWS.jsonPath + ')을 읽지 못했습니다: ' + newsFeed.error));
+    } else {
+      var up = newsFeed.updated ? new Date(newsFeed.updated) : null;
+      add(stat, h('p', { class: 'note' }, '자동 수집 ' + newsFeed.items.length + '건' + (up && !isNaN(up) ? ' · 마지막 갱신 ' + L.toDateTimeStr(up) : '') + ' · 매일 아침 7시쯤 GitHub 가 새로 받습니다.'));
+    }
+    var rssBox = h('div');
+    add(stat, h('div', { class: 'btn-row' },
+      !isFileProtocol() ? h('button', { type: 'button', class: 'btn btn-small', onclick: function () { loadNewsFeed(true); render(); } }, '목록 다시 불러오기') : null,
+      h('button', { type: 'button', class: 'btn btn-small', onclick: function () { tryDirectRss(rssBox); } }, 'RSS 직접 불러오기 시도')), rssBox);
+
+    var all = L.mergeNews([db.news || [], newsFeed.items]);
+    var f = newsFilter;
+    var lim = f.days ? L.toDateStr(new Date(now().getTime() - Number(f.days) * 86400000)) : '';
+    var q = f.q.trim().toLowerCase();
+    var rows = all.filter(function (n) {
+      if (lim && n.date && n.date < lim) return false;
+      if (f.origin && (n.origin || 'rss') !== f.origin) return false;
+      if (q && (n.title + ' ' + (n.source || '') + ' ' + (n.excerpt || '')).toLowerCase().indexOf(q) === -1) return false;
+      return true;
+    });
+    var cardUrls = {};
+    db.accidents.forEach(function (c) { if (c.src_url) cardUrls[c.src_url] = c.id; });
+    var form = h('form', { class: 'filters' },
+      field('검색어', h('input', { name: 'q', value: f.q, placeholder: '예: LPG, 충전소, 폭발' })),
+      field('기간', h('select', { name: 'days' }, [['7', '최근 7일'], ['30', '최근 30일'], ['90', '최근 90일'], ['', '전체']].map(function (o) { return h('option', { value: o[0], selected: o[0] === f.days }, o[1]); }))),
+      field('구분', h('select', { name: 'origin' }, [['', '전체'], ['rss', '자동 수집'], ['paste', '붙여넣은 기사']].map(function (o) { return h('option', { value: o[0], selected: o[0] === f.origin }, o[1]); }))));
+    form.addEventListener('change', function () { newsFilter = { q: form.elements.q.value, days: form.elements.days.value, origin: form.elements.origin.value }; render(); });
+    form.addEventListener('submit', function (e) { e.preventDefault(); newsFilter.q = form.elements.q.value; render(); });
+
+    // 날짜별로 묶어 최신순
+    var groups = [], cur = null;
+    rows.forEach(function (n) {
+      var d = n.date || '날짜 없음';
+      if (!cur || cur.date !== d) { cur = { date: d, list: [] }; groups.push(cur); }
+      cur.list.push(n);
+    });
+    var list = h('div', { class: 'news-list' }, groups.map(function (g) {
+      return h('section', { class: 'news-day' }, h('h3', null, g.date + ' (' + g.list.length + ')'),
+        h('ul', null, g.list.map(function (n) {
+          var mine = n.origin === 'paste';
+          return h('li', { class: 'news-item' },
+            h('div', { class: 'news-main' },
+              n.link ? h('a', { href: n.link, target: '_blank', rel: 'noopener noreferrer' }, n.title) : h('span', null, n.title),
+              h('span', { class: 'meta' }, [n.source, mine ? '붙여넣은 기사' : null].filter(Boolean).join(' · ')),
+              n.excerpt ? h('span', { class: 'excerpt' }, n.excerpt) : null),
+            h('div', { class: 'btn-row' },
+              n.link && cardUrls[n.link] ? h('a', { class: 'btn btn-small', href: '#/accidents/' + cardUrls[n.link] }, '카드 ' + cardUrls[n.link]) :
+                h('button', { type: 'button', class: 'btn btn-small', onclick: function () { cardDraft = L.newsToCardDraft(n); go('#/accidents/new'); } }, '사고 카드로'),
+              mine ? h('button', { type: 'button', class: 'btn btn-small btn-danger', onclick: function () {
+                var out = JSON.parse(JSON.stringify(db));
+                out.news = (out.news || []).filter(function (x) { return !(x.title === n.title && x.link === n.link); });
+                save(out); render();
+              } }, '삭제') : null));
+        })));
+    }));
+
+    // 붙여넣기
+    var paste = h('textarea', { class: 'tall', placeholder: '제목: 주택 LPG 폭발로 2명 부상\n2026.09.20\nhttps://…\n본문(선택): 20일 오후 …\n\n(다음 기사는 빈 줄 하나 띄우고)' });
+    var prev = h('div');
+    var pasteBox = h('details', { class: 'more', open: newsFeed.status === 'file' || newsFeed.status === 'error' ? true : null },
+      h('summary', null, '기사 붙여넣기 (자동 수집에 없는 기사 넣기)'),
+      h('p', { class: 'note' }, '기사마다 제목·날짜·주소·본문을 붙여 넣고, 기사 사이는 빈 줄로 띄우십시오. 날짜(2026-09-28, 2026.9.28, 2026년 9월 28일 등)를 읽어 날짜순으로 넣고, 같은 기사는 한 번만 넣습니다. 본문은 앞부분 200자만 발췌해 이 브라우저에만 저장합니다.'),
+      field('기사', paste),
+      h('div', { class: 'btn-row' }, h('button', { type: 'button', class: 'btn', onclick: function () {
+        prev.textContent = '';
+        var r = L.parseNewsPaste(paste.value, now());
+        if (r.problems.length) prev.appendChild(h('div', { class: 'alert warn' }, h('ul', null, r.problems.map(function (x) { return h('li', null, x); }))));
+        if (!r.items.length) { prev.appendChild(h('p', { class: 'note' }, '읽은 기사가 없습니다.')); return; }
+        prev.appendChild(h('ul', { class: 'preview-list' }, r.items.map(function (n) { return h('li', null, h('b', null, n.date || '날짜 없음'), ' ' + n.title + (n.link ? ' · 링크 있음' : '')); })));
+        prev.appendChild(h('div', { class: 'btn-row' }, h('button', { type: 'button', class: 'btn btn-primary', onclick: function () {
+          var before = (db.news || []).length;
+          var out = JSON.parse(JSON.stringify(db));
+          out.news = L.mergeNews([out.news || [], r.items]);
+          save(out); toast((out.news.length - before) + '건을 넣었습니다(중복 ' + (r.items.length - (out.news.length - before)) + '건 제외).'); render();
+        } }, r.items.length + '건 넣기')));
+      } }, '읽기')), prev);
+
+    add(main, h('section', { class: 'card' }, stat),
+      h('section', { class: 'card' }, h('h2', null, '날짜순 목록'), form,
+        h('div', { class: 'btn-row', style: 'margin-bottom:12px' }, h('span', { class: 'note' }, rows.length + '건'),
+          h('button', { type: 'button', class: 'btn btn-small', disabled: rows.length ? null : true, onclick: function () {
+            download('가스사고기사_' + today() + '.csv', new Blob([L.toCsv(L.NEWS_COLUMNS, rows.map(function (n) { var o = JSON.parse(JSON.stringify(n)); o.origin = n.origin === 'paste' ? '붙여넣기' : '자동 수집'; return o; }))], { type: 'text/csv;charset=utf-8' }));
+          } }, 'CSV 내보내기')),
+        rows.length ? list : h('p', { class: 'note' }, '조건에 맞는 기사가 없습니다.')),
+      h('section', { class: 'card' }, pasteBox));
   }
 
   // ── 프롬프트 세트 ─────────────────────────────────────────
@@ -668,6 +906,9 @@
     add(main, h('div', { class: 'page-head' }, h('h1', null, '데이터')),
       h('section', { class: 'card' }, h('h2', null, '지금 이 브라우저의 데이터'), h('p', null, counts + (db._sample ? ' (예시 데이터)' : '')),
         h('p', { class: 'note' }, '데이터는 이 브라우저(localStorage)에만 저장됩니다. 다른 기기에서 이어 쓰려면 엑셀로 내보낸 뒤 그 기기에서 가져오십시오.')),
+      h('section', { class: 'card' }, h('h2', null, 'AI 자동 모드 (선택)'),
+        h('p', { class: 'note' }, '본인 OpenAI API 키를 넣으면 답안을 제출할 때 3단계 평가와 4단계 모범답안을 AI 가 바로 작성합니다. 키는 이 브라우저에만 저장되며, 엑셀로 내보내도 들어가지 않습니다.'),
+        aiSettingsBox()),
       h('section', { class: 'card' }, h('h2', null, '엑셀 내보내기'),
         h('p', { class: 'note' }, '시트 3개(학습기록·사고카드·기술카드)가 든 xlsx 파일을 받습니다.'),
         h('button', { type: 'button', class: 'btn btn-primary', onclick: exportExcel }, '엑셀로 내보내기')),
@@ -733,7 +974,7 @@
       case 'records': viewRecords(); break;
       case 'print': viewPrint(parts[1]); break;
       case 'stats': viewStats(); break;
-      case 'accidents': parts[1] ? viewCardForm('accident', parts[1]) : viewCards('accident'); break;
+      case 'accidents': parts[1] === 'news' ? viewNews() : parts[1] ? viewCardForm('accident', parts[1]) : viewCards('accident'); break;
       case 'techs': parts[1] ? viewCardForm('tech', parts[1]) : viewCards('tech'); break;
       case 'prompts': viewPrompts(); break;
       case 'data': viewData(); break;
