@@ -1,8 +1,56 @@
 {
- "updated_at": "2026-10-08T01:49:11.630Z",
+ "updated_at": "2026-10-09T02:01:25.392Z",
  "source": "Google 뉴스 RSS 검색 (가스사고, 가스폭발, 가스누출) — 제목·링크·날짜·언론사만 저장, 본문 없음",
- "count": 472,
+ "count": 486,
  "items": [
+  {
+   "title": "\"연달아 굉음\"…영등포 쪽방촌 화재로 50대 사망",
+   "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE92UXYtY0kzNTZha1JnQ2xUendHRWVBWi1TRUxYREk3cXVKeC05YVBoVDhVS0VxTm44aVZESVNrV0EyMDUwVzBaOThvNDRvUXJjVjdma2V3dmhYdHRYSjB1MVo1MElsNnM?oc=5",
+   "date": "2026-10-08",
+   "published": "2026-10-08 22:56",
+   "source": "연합뉴스TV",
+   "query": "가스폭발"
+  },
+  {
+   "title": "\"베풀던 사람이었는데\"…‘부탄가스 폭발’ 쪽방촌서 숨진 50대",
+   "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE01cjM4TndUQkJ3M3N4enV5VVRvYmhZU2lOTW13SEpFTjlKLUdxVHFNTGtuQldZSXhQa2RFLTA0dnZiTW5GYTJIdVRGZ0NkYUZfd0s2TA?oc=5",
+   "date": "2026-10-08",
+   "published": "2026-10-08 19:55",
+   "source": "JTBC",
+   "query": "가스폭발"
+  },
+  {
+   "title": "“지진·가스 폭발 복합재난 대비”... 기장소방서, 2026 긴급구조종합훈련 실시",
+   "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE4ySlpJcGRfaXA4cS1TbEJpOGdKdmJBRW1EWWNfTTgtVk1LNlBsZ0ltb3BtNktTWDBEMnJ4SnVMSU9kMTYzZDh3VG5YWDAtTm1TVlk0UWRnNDhFSHI5TWM5djlOQzRlZC1jMGtB?oc=5",
+   "date": "2026-10-08",
+   "published": "2026-10-08 16:07",
+   "source": "안전정보",
+   "query": "가스폭발"
+  },
+  {
+   "title": "강남 산업현장 가스 폭발 막는다…가스안전공사·노동부 '불끈 365' 가동",
+   "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTFBWenVMQ3YwSWlwUTU0RHlEcW9oNWx5cUxfd0RHcFBnWlREUXdoaEItaGV4Vm9RVkIzdGRoU2VtR2RPbEpHNTBjdTdvdEhSb3RZZHdmRURLTjl6UGREdFExNXAzZmdiUGRuRUZ5WEZERnc?oc=5",
+   "date": "2026-10-08",
+   "published": "2026-10-08 15:24",
+   "source": "에너지코리아뉴스",
+   "query": "가스사고"
+  },
+  {
+   "title": "가스안전公 서울광역, 고압가스 안전관리 협력체계 구축",
+   "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE9Wbml5SU5xOGJhcWI3SGtzeVBWNXZCTlRLeW00X1M0WUFZMlNSc2owczRmNlRnSXpJVGRCY0ZiRFNscU1UZEpKR2tBRmlsVVRqdHQxdm5ydEN1RGNsWlJXZF85VkJKcVpkV1A1SkxRblhDZw?oc=5",
+   "date": "2026-10-08",
+   "published": "2026-10-08 15:18",
+   "source": "에너지신문",
+   "query": "가스사고"
+  },
+  {
+   "title": "전통시장 화재·가스사고 막는다…에너지공단, 소화기 등 안전용품 지원",
+   "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE93VkJsaE0wdVB2YnpoY0NzbFJ3aUZudWI2T2JPYkJUUFlzcEJIRVdoOE8xSS1pYXg5cnlVLXMwRWwtV3pmUGdlMng0Ym9qaWI2ZUstZzR2a0xlaVdMNy1rOGxBYU84RHJQV1JKOQ?oc=5",
+   "date": "2026-10-08",
+   "published": "2026-10-08 10:48",
+   "source": "에너지타임즈",
+   "query": "가스사고"
+  },
   {
    "title": "호텔 염소가스 누출...수영장 관리 기준 부실?",
    "link": "https://news.google.com/rss/articles/CBMipgFBVV95cUxQbl92S2JIUzFhOVNYN2NtY2xjN3J4S2NPVlIyVTh2UFBHdmlpOUtUekpmMExKVFB2NkZIb0dZNG5iOGRJSm1VOGtIdmVrQ1FmdkZRaXlqMGl1UEdYT3I4UXNtSURqUkZsbGI3R2FzTG9iT2JidDlMQlRzcGtpNjM0WG51NGh0d1ZXVWdHVWRBRTY3Ykw0MU90dVN3c2M4bG9VVTdIZzRR?oc=5",
@@ -156,19 +204,19 @@
    "query": "가스사고"
   },
   {
-   "title": "서귀포 호텔 염소가스 사고 ‘약품 오주입’ 원인…제주 수영장 전면 특별점검",
-   "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE5RV1Z2UkVRZDkzdUd6UGtXaHA1WElVMzF0UzJQQmsxS2VfSXBtR3NaUUlOZjBmUU5ySFVJXzR0VHpoMURTSDIzUE4ybUozcHlCVThfV1U2aWFDR1Z0ZlJEWnNtWEpQNm41TFFKS0tR0gFuQVVfeXFMTlFXVnZSRVFkOTN1R3pQa1docDVYSVUzMXRTMlBCazFLZV9JcG1Hc1pRSU5mMGZRTnJIVUlfNHRUemgxRFNIMjNQTjJtSjNweUJVOF9XVTZpYUNHVnRmUkRac21YSlA2bjVMUUpLS1E?oc=5",
-   "date": "2026-10-06",
-   "published": "2026-10-06 11:33",
-   "source": "제주뉴스",
-   "query": "가스사고"
-  },
-  {
    "title": "서귀포 호텔 가스 사고 후속조치...道, 화학물질 안전관리 대폭 강화",
    "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE5xLTkzbFF6dk4yZm5IVG16RDJNUkplcUpWV19FYUtKbFdNOWVtOUtTSzJOQ2dkdE9uRWYyLU1NRGVNdmhQU1hINkNCVGZSUDdQQjZHVVV4S3J0aGdoa0VsNmUyU0U5dE12T0Nr?oc=5",
    "date": "2026-10-06",
    "published": "2026-10-06 11:32",
    "source": "뉴스제주",
+   "query": "가스사고"
+  },
+  {
+   "title": "서귀포 호텔 염소가스 사고 ‘약품 오주입’ 원인…제주 수영장 전면 특별점검",
+   "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE02LW80WjZhZDdCZEVCc2xScXVDZDVQQlFNNmpVUG5GR0thSHRxVUtfOG1nQVg3MXExRTFHMTU3VmVtZmhWZVZrUWR5LWZ5QV9pX0Y4TjJ1Q1hfNm5pd3RZM3hodC1PVFFad0000gFuQVVfeXFMTlFXVnZSRVFkOTN1R3pQa1docDVYSVUzMXRTMlBCazFLZV9JcG1Hc1pRSU5mMGZRTnJIVUlfNHRUemgxRFNIMjNQTjJtSjNweUJVOF9XVTZpYUNHVnRmUkRac21YSlA2bjVMUUpLS1E?oc=5",
+   "date": "2026-10-06",
+   "published": "2026-10-06 11:31",
+   "source": "제주뉴스",
    "query": "가스사고"
   },
   {
@@ -181,10 +229,10 @@
   },
   {
    "title": "59명 피해 제주 호텔 염소가스 사고…제주도 재발 방지 나선다",
-   "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5ta3dtT2FxYXNrY0FZbDVVelFRY2dDVG1VaWdlYU5PRV9oeThqTzBjbFk0c2VQY1F3MnlXWnBsN1J4bzExdWJLaElnckd4UTViMEZ3WDFKX0pKdWhCN0JhaNIBYEFVX3lxTE5ta3dtT2FxYXNrY0FZbDVVelFRY2dDVG1VaWdlYU5PRV9oeThqTzBjbFk0c2VQY1F3MnlXWnBsN1J4bzExdWJLaElnckd4UTViMEZ3WDFKX0pKdWhCN0JhaA?oc=5",
+   "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE42NExBdlpXZV85TDJwOGE3b19MN3JpaEQzTmUxMjVOY05fMHBzeThUMzZ6a3ZjT25ObEtLMjVqdE9ZRmd5V0pjRkhzYnp4SkU?oc=5",
    "date": "2026-10-06",
-   "published": "2026-10-06 11:03",
-   "source": "연합뉴스",
+   "published": "2026-10-06 11:05",
+   "source": "Daum",
    "query": "가스사고"
   },
   {
@@ -285,10 +333,10 @@
   },
   {
    "title": "충북서 LPG차·CNG버스 잇단 가스 누출…안전관리 '비상'",
-   "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFBDOGtsZEQ4WmFsb2xJenBDRnZvRG83TDRycnBQU3c4Nm1KdV9Bb3JQbFJ2TlVUSHd4bm9rR0dQWUhPUFNPUlViS251NllYNlFXZHFzcDJ3a0I1SmZYeXZoN04tcjHSAWRBVV95cUxQQzhrbGREOFphbG9sSXpwQ0Z2b0RvN0w0cnJwUFN3ODZtSnVfQW9yUGxSdk5VVEh3eG5va0dHUFlIT1BTT1JVYktudTZZWDZRV2Rxc3Ayd2tCNUpmWHl2aDdOLXIx?oc=5",
+   "link": "https://news.google.com/rss/articles/CBMiRkFVX3lxTE9qUVB5M2dEVG12cWxBbWloVUE4T0IyVURSUTl0NTktZHlTN3B4THFLNV8xcWNmT0F2d2ZnV2VyT0x1RnZBM1E?oc=5",
    "date": "2026-10-05",
-   "published": "2026-10-05 10:07",
-   "source": "뉴스1",
+   "published": "2026-10-05 10:09",
+   "source": "Daum",
    "query": "가스누출"
   },
   {
@@ -417,14 +465,6 @@
    "date": "2026-10-02",
    "published": "2026-10-02 09:41",
    "source": "핀포인트뉴스",
-   "query": "가스사고"
-  },
-  {
-   "title": "그랜드 조선 제주서 염소가스 사고…조선호텔앤리조트 \"깊이 사과\"",
-   "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE54Rmp3SV9FOWpRWTZudW13X09zZkc0YjY3M2NsS3BNOVdWZ3YwUmxodGVaMVVLMlBFY0ZUYW9WRFNmRWdObHo5SWpZZHlaYjBlSzJfd01SV1pleVIybkxIaHUtTVEzVklRTjJhOXdSQ0E?oc=5",
-   "date": "2026-10-02",
-   "published": "2026-10-02 09:24",
-   "source": "위키리크스한국",
    "query": "가스사고"
   },
   {
@@ -564,6 +604,14 @@
    "query": "가스사고"
   },
   {
+   "title": "그랜드 조선 제주서 염소가스 사고… 조선호텔앤리조트 “깊이 사과”",
+   "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFB1NHVtNWlMZGF6Y1JtNmlaMTlscjFDaFZYTWJVNDBULVdKYndiVEN2VWN2cV80QW4wcnlmYTQ5S056czd0SDFCbjMySTkyNHN4WlpOLVlzT0RJdw?oc=5",
+   "date": "2026-10-01",
+   "published": "2026-10-01 20:18",
+   "source": "브릿지경제",
+   "query": "가스사고"
+  },
+  {
    "title": "제주 5성급호텔 염소가스 사고로 투숙객 등 59명 흡입",
    "link": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE1NREhjTDZleEVWNXVyVWJtQ05GZ0pBeXItVThJNkZhc2ktZm1UR3d3bE9yakgzREMwYzM2Y3ZGT1hCVC1LRERCX0llczhFUUhQ?oc=5",
    "date": "2026-10-01",
@@ -589,7 +637,7 @@
   },
   {
    "title": "‘제주 가스 사고’에 조선호텔앤리조트 대표 명의 사과…“원인 규명과 대책 마련”",
-   "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE5BSnRqNVg1cVBIMWJSWDJ3SjVrWDF2SHdKMlF4MWJEenlTWDdmd3VzeURmREpGSjZ5NGpqdXJMNTBOOW1QcmRXdTB1dDBDSFE?oc=5",
+   "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTFB4LTRQRnpCSzdmQndIX3hCSy1ORDlTcXpwLUdMbFlUUkllVnZuc0NxWExWbEw2SThoYUhxWU5EM3dlUjZhN2hZek9ZOA?oc=5",
    "date": "2026-10-01",
    "published": "2026-10-01 19:48",
    "source": "Daum",
@@ -600,7 +648,7 @@
    "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxPZGdiM0E1U2pHenhSVjhSYU1zd21hdVhzaUJhYTM1bThqOEFodFBNdEVwU3FqdHl0VE4wSHc0RnE2VGxvOXd2TzQyY3RIX1pRM3ljd20tTW1uZkRTeWg3RzFsWFpoM1hjNEs3aXFIN2xMMjFIdE54OHVCWS1YaW1wNg?oc=5",
    "date": "2026-10-01",
    "published": "2026-10-01 19:41",
-   "source": "edaily.co.kr",
+   "source": "이데일리",
    "query": "가스사고"
   },
   {
@@ -624,7 +672,7 @@
    "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE82MmFoTE8zeW5TdWJqY2NmTFNmVnZDb1pTMDVVeV9lTzhjOFJGSTJFRkZzSXAyNUpUWWN0SGRLLTFuTFJfM1BKWkdHSDRvSDNicUhrZnpMNkdMZVVsd1HSAWNBVV95cUxQU1loVjJGc3piSXphN1lpUHpzNXozZGJEMm80NjdDUXFUOGhybE9HNU5xdlEwcGltc2hfYmR4Qmo0WjFRX2xiNkV2VXFVajVhNmFVX2UtUzFNOTJNNTNFZDBUZDA?oc=5",
    "date": "2026-10-01",
    "published": "2026-10-01 19:24",
-   "source": "채널A 뉴스",
+   "source": "채널A",
    "query": "가스누출"
   },
   {
@@ -693,7 +741,7 @@
   },
   {
    "title": "제주 5성급 호텔서 염소가스 누출…투숙객 50여명 응급 이송",
-   "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE0wSlgwbDA2ZERNWXlERTRRSWdVQXRxSmxJRlg5S19wR2dtalJUaTlsQXRVR3ZjUloybWU1Qno3ZDlhTllCU01zdkJGd01kWTA?oc=5",
+   "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE91VzNob3c3al9HcG5ucDJiU0ppWEZlcHJrNnZJQ3Fxa3dZMm91VDUzMkZRbjMyaEQzZ0NOWmxPbVFtdjdRZ1FRNXU2Q1UwZEZINGJkeA?oc=5",
    "date": "2026-10-01",
    "published": "2026-10-01 16:47",
    "source": "Daum",
@@ -738,14 +786,6 @@
    "published": "2026-10-01 16:34",
    "source": "채널A 뉴스",
    "query": "가스폭발"
-  },
-  {
-   "title": "“군대 화생방인줄”…5성급 특급호텔 가스누출 사고, 투숙객 날벼락",
-   "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE05MGJncjkyMnFJa0p6b2dpQXhlVktSNExHR2tETTRhRWd1WVgtZnhWdWJqTWFMaFVUX0F5NHJtLTFiQlNnbzU1a05KaW9zaHZjT0lueg?oc=5",
-   "date": "2026-10-01",
-   "published": "2026-10-01 16:27",
-   "source": "매일경제",
-   "query": "가스누출"
   },
   {
    "title": "제주 5성급 호텔서 염소가스 누출...투숙객 40여명 응급 이송",
@@ -804,6 +844,14 @@
    "query": "가스누출"
   },
   {
+   "title": "“군대 화생방인줄”…제주 5성급 호텔서 가스누출 사고, 투숙객 날벼락",
+   "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE05MGJncjkyMnFJa0p6b2dpQXhlVktSNExHR2tETTRhRWd1WVgtZnhWdWJqTWFMaFVUX0F5NHJtLTFiQlNnbzU1a05KaW9zaHZjT0lueg?oc=5",
+   "date": "2026-10-01",
+   "published": "2026-10-01 15:20",
+   "source": "매일경제",
+   "query": "가스누출"
+  },
+  {
    "title": "경남에너지, 창원 취약계층 109가구에 가스타이머콕 지원",
    "link": "https://news.google.com/rss/articles/CBMickFVX3lxTFBjSjBYY1ZsaG4wT3Y5R3U5dndWSDQzeXpVTElsR3dhQ3gwd3ZhcGE4cmlKRGo5ZzNvd0pkUWFXSW9TYkhnUklRVExSM3FVcU1KQU94VjVwYzJKTzVudVN5eGlRX21ZdUZSZGxvQkNheDNjZw?oc=5",
    "date": "2026-10-01",
@@ -845,7 +893,7 @@
   },
   {
    "title": "노인의 날, 어르신 교통사고 예방 홍보 캠페인 실시",
-   "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE5Wb043Xzc0a0hReHB3bU9FeF8xVzBMOWFBQ0QwZEY0LWhydkFhOEhuRHA5VGdWRWRNLUh4ODhaS0dIMFRuS2JKcVYzcXhVNGo2Mk5FNTFBcXc?oc=5",
+   "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE1SMmFWNVk3QXBpQ2VjSG8zTmhlYUl2Z05TTFNBRldNZFlSN1I5VUNrRW1DT1hOMWF5Ym1vakd3QmoyRU8tUVZYQnQ0YThmX24zUC04ZU9mM1RNd3U4Q3c?oc=5",
    "date": "2026-10-01",
    "published": "2026-10-01 14:49",
    "source": "한국방송뉴스",
@@ -1140,14 +1188,6 @@
    "query": "가스사고"
   },
   {
-   "title": "\"소규모 사업장 LPG 사고 27%, 미검사 시설에서 발생\"",
-   "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9SUUVrUzNTcUZCTUhXQkpuWGJWcUN1SGhySzdFeDJ2MTBhVE14Y2FMZjZ2YkpjSldCZUtCX3A0Y3dzV0VYelU4M3FzUWlwdkhmNGxtaWUzenFWb0FrU0tVbjFyLURNWVBJLXdtbg?oc=5",
-   "date": "2026-09-28",
-   "published": "2026-09-28 16:05",
-   "source": "충청뉴스",
-   "query": "가스사고"
-  },
-  {
    "title": "경주시, 전통시장 화재·가스사고 예방 안전점검",
    "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE9SbFU4U3pnLW1FVW0yeVp2ZEk3SXlPcEs3Z0dqMHpWak9WenpWbng0QkVRMEl2X3k2Z245WVZIZnVjRlhRbGpQNjJGVU83X2ltQVFJeV84bk8?oc=5",
    "date": "2026-09-28",
@@ -1193,6 +1233,14 @@
    "date": "2026-09-28",
    "published": "2026-09-28 15:19",
    "source": "굿모닝충청",
+   "query": "가스사고"
+  },
+  {
+   "title": "소규모 사업장 LPG 사고 27%, 미검사 시설에서 발생",
+   "link": "https://news.google.com/rss/articles/CBMickFVX3lxTFBYakg4ekxpNHVNRjRHYUpwR3psMmxGQjZkYkhkdmlsYU5MVTdFbnlWQnd1dHQycDgzeVF6RHRWU2NfLURqb25SSU43anQ3QUZpNmliRG1JQk5ESHVMaXRJekotb0dMRUc5RVVRdkJ5azBfUdIBdkFVX3lxTE1kX3dkYnBVNU5laHNLcTJ5RjY1SVRncE0yZkZGWDJMODZXbjQ2dUdGWWNsYWNHQWNLbVViY0lkaWdhSDZYYlJvSThpbmROekhVS1hRcW4xellBdVRXaVdodzZSU2ZsUzhmM0xQRnFtd0d5eEtEcXc?oc=5",
+   "date": "2026-09-28",
+   "published": "2026-09-28 15:15",
+   "source": "에너지타임뉴스",
    "query": "가스사고"
   },
   {
@@ -1341,10 +1389,10 @@
   },
   {
    "title": "\"깜빡한 가스 밸브, 대형 사고 부른다\"⋯추석 연휴 가스안전 '주의보'",
-   "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE00eVN1cW56cUpUOGNVbnp4eG8zeE45bWU5ZHpYOUVWYU9iMTg0dXdLampGNkJaSlIxM1hIQjhlVnYyUmstRG1BUmdGNi1tSjFxWFB0OA?oc=5",
+   "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5mRk0waGdreVIzRVdocEVua1RydFlLNEVQS0p3VkFWRFI1Q2hLeGQwNXNBVXF4NjJLWElmc3RBQkhXQVpWNGdIeU5ISWF0cDByd293bQ?oc=5",
    "date": "2026-09-25",
-   "published": "2026-09-25 16:00",
-   "source": "Daum",
+   "published": "2026-09-25 06:00",
+   "source": "이투데이",
    "query": "가스사고"
   },
   {
@@ -1372,6 +1420,14 @@
    "query": "가스사고"
   },
   {
+   "title": "가스안전公 서울동부지사, 추석 앞두고 휴대용 가스레인지 사고 예방 캠페인",
+   "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE5RRFhFQXFSODZaVjBrczRaZmpPQ2Y5UGpaeFZvRUdhbkZueDNYeE1qbTNvbWZOM0NEQzZuRXlia3BEcFVzcm1XUlREd0l3SHlSMFNzei1DY0ZTazlLTE9fZDNjdHlfcFNpSXlMVTdmdldnUQ?oc=5",
+   "date": "2026-09-23",
+   "published": "2026-09-23 16:00",
+   "source": "에너지데일리",
+   "query": "가스사고"
+  },
+  {
    "title": "\"가스사고 없는 추석 보내시길\"…가스안전공사, 안전점검·장보기 펼쳐",
    "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFBYOEtQNzhkaVUxNE1mZnJxQ29kc2lKSS1sbjdXT2oyS2FpdVFvX0t0bC03bllFZ3lWSGlDLUhaQlFQSnFjeG9rOHNvR05yQ0xjbDYzWktqbnFCWXR5aUlMZkZzMkwzbmVvVzBRSw?oc=5",
    "date": "2026-09-23",
@@ -1388,11 +1444,11 @@
    "query": "가스폭발"
   },
   {
-   "title": "가스안전公 서울동부지사, 추석 앞두고 휴대용 가스레인지 사고 예방 캠페인",
-   "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE5RRFhFQXFSODZaVjBrczRaZmpPQ2Y5UGpaeFZvRUdhbkZueDNYeE1qbTNvbWZOM0NEQzZuRXlia3BEcFVzcm1XUlREd0l3SHlSMFNzei1DY0ZTazlLTE9fZDNjdHlfcFNpSXlMVTdmdldnUQ?oc=5",
+   "title": "가스안전공사 전남서부, 추석맞이 가스안전 캠페인",
+   "link": "https://news.google.com/rss/articles/CBMickFVX3lxTFBENURsTUNobVNsVTAtRTlHQXB4d1U0dXNVS0lvRkVnY3k2MGc5X2ZzQjNkdG5jQzFQQjdzQWJfWUt2WWtyVy0tV3kxUFdaUlcyeUdmY0tMY0x6MmFyWTVDTW1fd3pzUWVEVDhyN3F0RGl4Zw?oc=5",
    "date": "2026-09-23",
-   "published": "2026-09-23 09:49",
-   "source": "에너지데일리",
+   "published": "2026-09-23 13:47",
+   "source": "에너지신문",
    "query": "가스사고"
   },
   {
@@ -1516,19 +1572,19 @@
    "query": "가스사고"
   },
   {
-   "title": "명절 음식하다 가스 사고 날라…삼천리, 추석 앞두고 특별 안전점검",
-   "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBtWTc4R1NXcWhHX1pBdC1FLURFZlhDMV82TkNscVc5elFCRlZnSGw0cnk2c1N5SXZEYl93SGtLQ2Fhc3RkXzlRVXpENjRpd0NTR0VwN3FwLVdMekpTdnBLN0cweTFTVjExMzJtRVFRVjg2V0HSAXdBVV95cUxNUk55bjFNT0U2ZXFhZVNCUWdORnJtSDJ2c0JISlRkNW0tVGtMZ1dUZFh6V1F2c0hicFR3RERfaHdsZVBiT3RSYlFUOTRVek80NnBxZUFoa1dRV3FNRFpXVVpud1J0VzR6QmI3aUhCZm5WZFQ4TmVnQQ?oc=5",
-   "date": "2026-09-21",
-   "published": "2026-09-21 16:00",
-   "source": "핀포인트뉴스",
-   "query": "가스사고"
-  },
-  {
    "title": "가스사고배상책임보험 운영체계 개편",
    "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTFB3cVNCVDBGS2RwWEY0S05UQnp4TlpXMFh5TG1VMUQyNUR6Y0hKc2IxNWRpNUhBTC0xa0hUMDJMb0FaeDFpdGRsU1pMWGppRVBMU1NlcXQwNS1GWXBsYWI3VkFtTU1LajVYdHVr?oc=5",
    "date": "2026-09-21",
    "published": "2026-09-21 16:00",
    "source": "보험신보",
+   "query": "가스사고"
+  },
+  {
+   "title": "명절 음식하다 가스 사고 날라…삼천리, 추석 앞두고 특별 안전점검",
+   "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBtWTc4R1NXcWhHX1pBdC1FLURFZlhDMV82TkNscVc5elFCRlZnSGw0cnk2c1N5SXZEYl93SGtLQ2Fhc3RkXzlRVXpENjRpd0NTR0VwN3FwLVdMekpTdnBLN0cweTFTVjExMzJtRVFRVjg2V0HSAXdBVV95cUxNUk55bjFNT0U2ZXFhZVNCUWdORnJtSDJ2c0JISlRkNW0tVGtMZ1dUZFh6V1F2c0hicFR3RERfaHdsZVBiT3RSYlFUOTRVek80NnBxZUFoa1dRV3FNRFpXVVpud1J0VzR6QmI3aUhCZm5WZFQ4TmVnQQ?oc=5",
+   "date": "2026-09-21",
+   "published": "2026-09-21 16:00",
+   "source": "핀포인트뉴스",
    "query": "가스사고"
   },
   {
@@ -1660,14 +1716,6 @@
    "query": "가스누출"
   },
   {
-   "title": "부산 감천항 조선소에서 가스 누출…5명 중경상",
-   "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9IZzlPbFo3QlI2Tml0VjB4SU5hNEZzTGVNOVNRVnVWQUZyT2Z1bFZ3NGVhVmRRR1gyY0RDOVRiMGJfbHo5dVU3Mk10TXY2UnhTOUpaN1ZhVjNtU0E?oc=5",
-   "date": "2026-09-15",
-   "published": "2026-09-15 16:00",
-   "source": "KBS 뉴스",
-   "query": "가스누출"
-  },
-  {
    "title": "부산 감천항 선박서 프레온 가스 누출...2명 심정지",
    "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE1kUlpFRkpRU2hrSXN3OWZSeUFNUE5Ic0NkMXZrYmd6X0E5OXIyRkt4a3pDUU9SOW0xZWQyMVk2cWdmUFEtUExscjF5cGRoMUYxU1pQN0pkY3NLTEs3MWc?oc=5",
    "date": "2026-09-15",
@@ -1692,19 +1740,19 @@
    "query": "가스누출"
   },
   {
-   "title": "부산 감천항 정박 중인 러시아 선박서 프레온 가스 누출…2명 심정지",
-   "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9TT0I2ZzZYU3NMRG5mdm1DYlhvdklIdlI0Uk9wcWRJRnRVLTZ4dzhsOVVtTUdEaXRDdWpzYnY1ZTlWS1VtckpiU1BTU09TQkFNaTA1b1ptczJuQdIBX0FVX3lxTE5lWndUdjlJS0FTNzEwcEFneVpzTlZ4WFl6dFdhRUdvOFFoTnJpTmZGd21kby1adXBsdWVoVWpseEpGa3ZEUFlkNjN2MTFRc29xcXVkV1JFV3Q4RWtfNU1z?oc=5",
-   "date": "2026-09-15",
-   "published": "2026-09-15 16:00",
-   "source": "경향신문",
-   "query": "가스누출"
-  },
-  {
    "title": "[속보] 부산 사하구 조선소 가스 누출…2명 심정지",
    "link": "https://news.google.com/rss/articles/CBMijgFBVV95cUxQcEFsV3RwRzRrbFc0cXFvTEdYQWp2dmluWktyQWNfUE1LX0NVLWZXYk5OLVpQVTQ3cWNCNDdES3RnMGh1b2xleGt6cEltR2NiVGJETXYzQmtRcUNzSnlvRnVWNlNDTUl2RXZSLS1yOUt4V0Vab0NtVjNJQ3preUJzcFktaEFNdWFXSkJrSGlR?oc=5",
    "date": "2026-09-15",
    "published": "2026-09-15 16:00",
    "source": "국제신문",
+   "query": "가스누출"
+  },
+  {
+   "title": "부산 감천항 정박 중인 러시아 선박서 프레온 가스 누출…2명 심정지",
+   "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9TT0I2ZzZYU3NMRG5mdm1DYlhvdklIdlI0Uk9wcWRJRnRVLTZ4dzhsOVVtTUdEaXRDdWpzYnY1ZTlWS1VtckpiU1BTU09TQkFNaTA1b1ptczJuQdIBX0FVX3lxTE5lWndUdjlJS0FTNzEwcEFneVpzTlZ4WFl6dFdhRUdvOFFoTnJpTmZGd21kby1adXBsdWVoVWpseEpGa3ZEUFlkNjN2MTFRc29xcXVkV1JFV3Q4RWtfNU1z?oc=5",
+   "date": "2026-09-15",
+   "published": "2026-09-15 16:00",
+   "source": "경향신문",
    "query": "가스누출"
   },
   {
@@ -1724,6 +1772,14 @@
    "query": "가스누출"
   },
   {
+   "title": "부산 감천항 조선소에서 가스 누출…5명 중경상",
+   "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9IZzlPbFo3QlI2Tml0VjB4SU5hNEZzTGVNOVNRVnVWQUZyT2Z1bFZ3NGVhVmRRR1gyY0RDOVRiMGJfbHo5dVU3Mk10TXY2UnhTOUpaN1ZhVjNtU0E?oc=5",
+   "date": "2026-09-15",
+   "published": "2026-09-15 16:00",
+   "source": "KBS 뉴스",
+   "query": "가스누출"
+  },
+  {
    "title": "부산 감천항 러시아 어선서 가스 누출…선원 5명 부상(종합2보)",
    "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE11SElVaEp6RFd4RlNicVJpQkpDalRocjI1a1Zqck1VR3VVa0RWRjRBdXVWc01DUUJFUnV3cF9ETGw4SnZESkRtZ2ZpbW9CX0JhRlJZOS1lYUV5M0nSAWBBVV95cUxNU2NxZmwybS1DUUoxdDFEWVRzN0taT1d4ZW01TFczb2ZhLVdWYXd0bDhWZWxfM29RMW1ra1NhNTF1OHAxNkQ3ZkppSkZ3bmljeTY0WUlIdzhXYWtFcTUwX2U?oc=5",
    "date": "2026-09-15",
@@ -1732,19 +1788,19 @@
    "query": "가스누출"
   },
   {
-   "title": "부산 감천항 러시아 어선서 가스 누출…2명 심정지",
-   "link": "https://news.google.com/rss/articles/CBMidkFVX3lxTFBpRjMtWWZ3TDE2d184TXhsQ0xHZDhJaV83NXV4X1ZmQWg5Ym9mSkpDR0IzZF8yVUo0ZXJ1MWw0cmw2ZHBEZ3A4RldOdkswWVFadmpKTXhyc0haZTNTTVlndUZ6WENZc2hEbm1ESVN6OXdkN3p5RmfSAWZBVV95cUxPU0Jlb1JkRG4xQnZ5WGtaVDJ0YXdDZUZzMEdFVG1STldxWUtfWjBxVnFuLXVHZG1xTU5QMVl0cExlVTFKTE43aDBkTmFHRFRqN1RUX3BNV0JBQnNvRWZZZXJrSGJzekE?oc=5",
-   "date": "2026-09-15",
-   "published": "2026-09-15 16:00",
-   "source": "동아일보",
-   "query": "가스누출"
-  },
-  {
    "title": "감천항 선박서 가스누출…통영선 어선 전복(종합)",
    "link": "https://news.google.com/rss/articles/CBMijgFBVV95cUxQbk8zMThIQ212YXlVRzRCeHBtYW04NXhLdk13eXZSQVJLc1VNNDhtbW1kTXdrdTZHUVpuMG9TLTNHckFYZ0RkOWNETnZWWmtuSWZDUnh3TGxJSnN1SkM0TWVPeHFZU3p0NmN2REctbFM0dWY0b29GOVItdHpNSmt4M1U4V2hOZV9jZXRfekN3?oc=5",
    "date": "2026-09-15",
    "published": "2026-09-15 16:00",
    "source": "국제신문",
+   "query": "가스누출"
+  },
+  {
+   "title": "부산 감천항 러시아 어선서 가스 누출…2명 심정지",
+   "link": "https://news.google.com/rss/articles/CBMidkFVX3lxTFBpRjMtWWZ3TDE2d184TXhsQ0xHZDhJaV83NXV4X1ZmQWg5Ym9mSkpDR0IzZF8yVUo0ZXJ1MWw0cmw2ZHBEZ3A4RldOdkswWVFadmpKTXhyc0haZTNTTVlndUZ6WENZc2hEbm1ESVN6OXdkN3p5RmfSAWZBVV95cUxPU0Jlb1JkRG4xQnZ5WGtaVDJ0YXdDZUZzMEdFVG1STldxWUtfWjBxVnFuLXVHZG1xTU5QMVl0cExlVTFKTE43aDBkTmFHRFRqN1RUX3BNV0JBQnNvRWZZZXJrSGJzekE?oc=5",
+   "date": "2026-09-15",
+   "published": "2026-09-15 16:00",
+   "source": "동아일보",
    "query": "가스누출"
   },
   {
@@ -1780,11 +1836,19 @@
    "query": "가스누출"
   },
   {
-   "title": "[속보] 부산 감천항 러시아 어선서 가스 누출…2명 심정지",
-   "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE50X19ZdUlFWUdUQk5BWEpzY3YzVDJkSVB4Qkc0NloxUFVRcXZfSUNzN254ZmlQZDM1dl9saU5IbFhwb3hPOWJUaXlkNm5JYlIxaWFaZmJ6MlZvMFVsNzRUWF9rbFV2UXc?oc=5",
+   "title": "[속보] 부산 감천항서 선박 가스 누출로 2명 심정지",
+   "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTFB1VlpwejVXWUFuWUFZWG1wUmhTbk5DU2dROUlET2hNbmphSmpqSU96M29tcHp3bDRKbEg3TG1aRmlQdVJzb1hFRHJLb3JPY0t3dGI0NHIycFNzdWpKWThRX1dXeGt6aS0xWUE?oc=5",
    "date": "2026-09-15",
    "published": "2026-09-15 16:00",
-   "source": "강원도민일보",
+   "source": "티제이비",
+   "query": "가스누출"
+  },
+  {
+   "title": "부산 감천항 선박서 가스 누출로 2명 심정지",
+   "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE0yS2daYTJ2VWx4ZkdCYjJ3Vjl0Q3dXd0hmbENXb1BxVzNxbTNZZFFsRUR5bVRsYkFOWnpveWlyd0xQem80VU9nWUc3MS00ZlY4R2FHM0FvcjRBMXPSAWBBVV95cUxQVW5NTldmd0tnUWNydGdfLU54NnY4bEl3Um5LM2YzaEhtNk0xUklXX3Jybjl5YmFCMzhJRVJZX0FTcmdHRDY4akI4SlVYWUlIYVRhMlA1RFZOa2VyRWVyVWY?oc=5",
+   "date": "2026-09-15",
+   "published": "2026-09-15 16:00",
+   "source": "연합뉴스",
    "query": "가스누출"
   },
   {
@@ -1796,11 +1860,11 @@
    "query": "가스누출"
   },
   {
-   "title": "[속보] 부산 감천항서 선박 가스 누출로 2명 심정지",
-   "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFA4dktsUGxBUmZRUmlxSEdReEY3SHctb3FuLTczVlNNV09rQmtLTnZXMzVBOXZMbE5MZHlJMHZBOThlMlpuUG1McDVDNGRpQ2c1dVBsaGNWNG9fQQ?oc=5",
+   "title": "[속보] 부산 감천항 러시아 어선서 가스 누출…2명 심정지",
+   "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE50X19ZdUlFWUdUQk5BWEpzY3YzVDJkSVB4Qkc0NloxUFVRcXZfSUNzN254ZmlQZDM1dl9saU5IbFhwb3hPOWJUaXlkNm5JYlIxaWFaZmJ6MlZvMFVsNzRUWF9rbFV2UXc?oc=5",
    "date": "2026-09-15",
    "published": "2026-09-15 16:00",
-   "source": "한국경제",
+   "source": "강원도민일보",
    "query": "가스누출"
   },
   {
@@ -1836,6 +1900,14 @@
    "query": "가스누출"
   },
   {
+   "title": "부산 감천항 러시아 어선서 가스 누출…심정지 2명 호흡 회복",
+   "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE1GamRHN2VqTWt3QWJrRnJ1NFg3WWZnUEplLWM3Q3JiN2gycU9lNlRSNXAtOEtJQ3QxdmJRMVU0d0VRZ3lDbm5NSlB5emhlSjM3am15N3ZrbUVfOXROZG5zWkQ5ZEU?oc=5",
+   "date": "2026-09-15",
+   "published": "2026-09-15 16:00",
+   "source": "한겨레",
+   "query": "가스누출"
+  },
+  {
    "title": "부산 감천항 정박 중인 선박서 가스 누출…2명 심정지·3명 경상",
    "link": "https://news.google.com/rss/articles/CBMiRkFVX3lxTE9nVENseUQtS0ZtWkIxX29PbEs2QllTVDhQSUZWbUxOOTlaVHRkOThnY295UWs0OWRZLUQ5WXplUG9SR0YzQkE?oc=5",
    "date": "2026-09-15",
@@ -1844,11 +1916,11 @@
    "query": "가스누출"
   },
   {
-   "title": "부산 감천항 러시아 어선서 가스 누출…심정지 2명 호흡 회복",
-   "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE1GamRHN2VqTWt3QWJrRnJ1NFg3WWZnUEplLWM3Q3JiN2gycU9lNlRSNXAtOEtJQ3QxdmJRMVU0d0VRZ3lDbm5NSlB5emhlSjM3am15N3ZrbUVfOXROZG5zWkQ5ZEU?oc=5",
+   "title": "부산 감천항 어선서 프레온 가스 누출…러시아 선원 5명 부상",
+   "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1SZVlvYzR4cTltUUpMcXZxaVdkbmt6eHJSNGlqUDZRWkZoOEtwaHk0SEFoeHd5SC04eXR0MFk4VW1wbTBRMFlGa1BDeG9EZG5hUFBMVWRCODJpaVlZb3ZfZUFrSnZiR3gzcWVicWFReEs?oc=5",
    "date": "2026-09-15",
    "published": "2026-09-15 16:00",
-   "source": "한겨레",
+   "source": "신아일보",
    "query": "가스누출"
   },
   {
@@ -1873,14 +1945,6 @@
    "date": "2026-09-15",
    "published": "2026-09-15 16:00",
    "source": "한국경제",
-   "query": "가스누출"
-  },
-  {
-   "title": "부산 감천항 선박서 가스 누출로 2명 심정지",
-   "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE0yS2daYTJ2VWx4ZkdCYjJ3Vjl0Q3dXd0hmbENXb1BxVzNxbTNZZFFsRUR5bVRsYkFOWnpveWlyd0xQem80VU9nWUc3MS00ZlY4R2FHM0FvcjRBMXPSAWBBVV95cUxQVW5NTldmd0tnUWNydGdfLU54NnY4bEl3Um5LM2YzaEhtNk0xUklXX3Jybjl5YmFCMzhJRVJZX0FTcmdHRDY4akI4SlVYWUlIYVRhMlA1RFZOa2VyRWVyVWY?oc=5",
-   "date": "2026-09-15",
-   "published": "2026-09-15 16:00",
-   "source": "연합뉴스",
    "query": "가스누출"
   },
   {
@@ -2028,14 +2092,6 @@
    "query": "가스누출"
   },
   {
-   "title": "부산 감천항 어선서 프레온 가스 누출…러시아 선원 5명 부상",
-   "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1SZVlvYzR4cTltUUpMcXZxaVdkbmt6eHJSNGlqUDZRWkZoOEtwaHk0SEFoeHd5SC04eXR0MFk4VW1wbTBRMFlGa1BDeG9EZG5hUFBMVWRCODJpaVlZb3ZfZUFrSnZiR3gzcWVicWFReEs?oc=5",
-   "date": "2026-09-15",
-   "published": "2026-09-15 15:24",
-   "source": "신아일보",
-   "query": "가스누출"
-  },
-  {
    "title": "부산 감천항 어선 가스 누출…심정지 2명 자발 순환 회복",
    "link": "https://news.google.com/rss/articles/CBMijgFBVV95cUxQRDlndi1PZ3pVTk14S2prN0FnWVZWMGVEWEc5VnRkeHRPZ29FTndrb3ZqdUxYWkw1SFFkc19sNlI4aEJYbXdnN3Z6eFlId0F1NnA3RW9zVzFQY1FURlZ2NmdmNFR5T2JZZzBJaHVVanR6WmZUaWREV1ZnTWxfTUpsWmZ5dlpaTHp6SWJLVW5B?oc=5",
    "date": "2026-09-15",
@@ -2058,14 +2114,6 @@
    "published": "2026-09-14 17:57",
    "source": "강원도민일보",
    "query": "가스누출"
-  },
-  {
-   "title": "가스안전공사, 추석 연휴 가스사고 예방수칙 당부",
-   "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFBrMldwYU1VN2hFRzI3WlV2Q1NzOWFiclRGak9NZTBaU0pPeHhIMU1Dc1BxV1lSVkVOVkQ5eEdFaFB3OUlPOUxLNm1pOUNxR0t2Y1NpMkVKOWE4U1c4TlFVQTIteGU?oc=5",
-   "date": "2026-09-14",
-   "published": "2026-09-14 16:00",
-   "source": "국토일보",
-   "query": "가스사고"
   },
   {
    "title": "33회 가스안전대상…동북아LNG허브터미널 안영훈 대표 은탑훈장",
@@ -2116,6 +2164,14 @@
    "query": "가스누출"
   },
   {
+   "title": "가스안전공사, 추석 연휴 가스사고 예방수칙 당부",
+   "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFBrMldwYU1VN2hFRzI3WlV2Q1NzOWFiclRGak9NZTBaU0pPeHhIMU1Dc1BxV1lSVkVOVkQ5eEdFaFB3OUlPOUxLNm1pOUNxR0t2Y1NpMkVKOWE4U1c4TlFVQTIteGU?oc=5",
+   "date": "2026-09-14",
+   "published": "2026-09-14 16:00",
+   "source": "국토일보",
+   "query": "가스사고"
+  },
+  {
    "title": "[속보]어린이집 인근 차량서 LPG 누출…원아 등 60여명 대피",
    "link": "https://news.google.com/rss/articles/CBMiUEFVX3lxTFB5TjRJZlpONzllZGJ5dVdWTEdqSXg5NEdfbWFTNWF0NDYxSkRiR0RYN1NMT2hybHlWRjA2UVUwVHNVaERZVU1ocU5fWnUtM2gz?oc=5",
    "date": "2026-09-14",
@@ -2164,11 +2220,19 @@
    "query": "가스사고"
   },
   {
-   "title": "주차 차량에서 부탄가스 폭발…운전자 중상",
-   "link": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE93SEdEMTItaXJTU3B4cVN3UWhYZjhJVG9OZThSV1B4NEd1ZkJYZnktaHlnREFqNlZRbGdSVHNhLUlhT2NLNGgxZVFSd2Y0RjhHNzZGT1BWQUpfM2YxSW4xZ3JIVk1Ldw?oc=5",
+   "title": "가스안전공사, 추석 가스사고 예방수칙 당부",
+   "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE43QkpYX1BNTGktREdzWkRGcTJPSUVjQXp6b280VDEyZ3YtRXhhYnNGWWdnNVZZR1VPVHVpcG4tNTBjUW5YTk02QjRFMEdnMHJUV2t6MVdxWUNhb1EzZ1BmczYwamJXYXBCY2pPTE0zOUxKRVnSAXdBVV95cUxPS2llanNjV0RaV2RVRnNPc1JydE5MMC1HcS1BZVNOQm5yem9DZFVmQzhYdUs1Y0Jka1RGMWFPUXdTYlVxWWZLNi1hV3EyRDFEaWxyd3pwU3oySGlDTFVGazNzbExvcGZrZlpmZk5RYm1naU8xQzdKaw?oc=5",
    "date": "2026-09-11",
    "published": "2026-09-11 16:00",
-   "source": "KBS 뉴스",
+   "source": "핀포인트뉴스",
+   "query": "가스사고"
+  },
+  {
+   "title": "주차 차량서 휴대용 부탄가스 폭발…운전자 중상",
+   "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1aRnJHWlRNNEswMjNPSmV1TjJqYkFxM0xiQmFRLTVidktBVU9VdUw5WVRGOHExOTNsa3A5T0t2WFBlZVdWNzdPZ0k1S01McDdwNl9ocTNUTHV6OHPSAWBBVV95cUxNb0V5UXdBYUlfRnhydF9rREs1UXcxbnBOOFRCRlYwRVBuRDBjSER4Z0xodjd0akRzR2ZlVlpnRE1EWkxuOWhsVENFR0p0V05EVlFXQ1RhUU1MLVk5N090LUM?oc=5",
+   "date": "2026-09-11",
+   "published": "2026-09-11 16:00",
+   "source": "연합뉴스",
    "query": "가스폭발"
   },
   {
@@ -2196,11 +2260,19 @@
    "query": "가스폭발"
   },
   {
-   "title": "주차 차량서 휴대용 부탄가스 폭발…운전자 중상",
-   "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5rVTJrYlV2MGtidV85b19meDN1bEJDU2s4aUMzSThmWHpsTTNaX3pzVTI5Ny1kQzkwa1ktb19lUUpmMXZDaW5IdjVyXzFNb19rd3NTMnQtanl2VnlDM1MzVWNET0VBZVFjbEE?oc=5",
+   "title": "부산 지하주차장 승용차서 가스 폭발…운전자 2도 화상",
+   "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1CdGtVTVFoOFZQUHk1LUFZWnlZVXlTU2N1UGg5Vll3TGZpZVR0cW5sRWpQdkhGUG5JTTBtM1ptX0lSNGdjUUZFVThBN21VSXI5cE9QaXVGZ3ZraXVEYUhybdIBeEFVX3lxTE5sN2RodmlwUnFpTmhxTTVYbVc2SkFyenF6d05haFQ5QzBwbmtSdFZvNkU4YmdFWHpyZ3FPNy0yWXZZTVhNTndCTkV0X21DNHgxdEZhRUM2UzFwWDZmVnBHVVRmX1Z2clR4dE5kUXZxdmUtZTNKWWpjeg?oc=5",
    "date": "2026-09-11",
    "published": "2026-09-11 16:00",
-   "source": "SBS 뉴스",
+   "source": "뉴시스",
+   "query": "가스폭발"
+  },
+  {
+   "title": "주차 차량에서 부탄가스 폭발…운전자 중상",
+   "link": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE93SEdEMTItaXJTU3B4cVN3UWhYZjhJVG9OZThSV1B4NEd1ZkJYZnktaHlnREFqNlZRbGdSVHNhLUlhT2NLNGgxZVFSd2Y0RjhHNzZGT1BWQUpfM2YxSW4xZ3JIVk1Ldw?oc=5",
+   "date": "2026-09-11",
+   "published": "2026-09-11 16:00",
+   "source": "KBS 뉴스",
    "query": "가스폭발"
   },
   {
@@ -2209,14 +2281,6 @@
    "date": "2026-09-11",
    "published": "2026-09-11 16:00",
    "source": "국민일보",
-   "query": "가스폭발"
-  },
-  {
-   "title": "부산 지하주차장 승용차서 가스 폭발…운전자 2도 화상",
-   "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1CdGtVTVFoOFZQUHk1LUFZWnlZVXlTU2N1UGg5Vll3TGZpZVR0cW5sRWpQdkhGUG5JTTBtM1ptX0lSNGdjUUZFVThBN21VSXI5cE9QaXVGZ3ZraXVEYUhybdIBeEFVX3lxTE5sN2RodmlwUnFpTmhxTTVYbVc2SkFyenF6d05haFQ5QzBwbmtSdFZvNkU4YmdFWHpyZ3FPNy0yWXZZTVhNTndCTkV0X21DNHgxdEZhRUM2UzFwWDZmVnBHVVRmX1Z2clR4dE5kUXZxdmUtZTNKWWpjeg?oc=5",
-   "date": "2026-09-11",
-   "published": "2026-09-11 16:00",
-   "source": "뉴시스",
    "query": "가스폭발"
   },
   {
@@ -2250,14 +2314,6 @@
    "published": "2026-09-11 16:00",
    "source": "LG헬로비전",
    "query": "가스폭발"
-  },
-  {
-   "title": "가스안전공사, 추석 가스사고 예방수칙 당부",
-   "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE43QkpYX1BNTGktREdzWkRGcTJPSUVjQXp6b280VDEyZ3YtRXhhYnNGWWdnNVZZR1VPVHVpcG4tNTBjUW5YTk02QjRFMEdnMHJUV2t6MVdxWUNhb1EzZ1BmczYwamJXYXBCY2pPTE0zOUxKRVnSAXdBVV95cUxPS2llanNjV0RaV2RVRnNPc1JydE5MMC1HcS1BZVNOQm5yem9DZFVmQzhYdUs1Y0Jka1RGMWFPUXdTYlVxWWZLNi1hV3EyRDFEaWxyd3pwU3oySGlDTFVGazNzbExvcGZrZlpmZk5RYm1naU8xQzdKaw?oc=5",
-   "date": "2026-09-11",
-   "published": "2026-09-11 15:16",
-   "source": "핀포인트뉴스",
-   "query": "가스사고"
   },
   {
    "title": "아파트 주차장서 '펑'…승용차 내부 부탄가스 폭발, 운전자 중상",
@@ -2332,11 +2388,27 @@
    "query": "가스사고"
   },
   {
+   "title": "경남에너지, 대규모 복합재난 훈련 참여…도시가스 사고 대응체계 점검",
+   "link": "https://news.google.com/rss/articles/CBMickFVX3lxTFBTZkhqVjh0d1puSTN3bjg3ZE5Kd3BCVFo1UFlWUWZzQmFnLTFWdFo5Slk3ZG9JWU9fdlVLVTdGNEhXeEhsWERBRjlrcnlyQ2J5bXVHVThub3o1TTBJcHdGR2RGVGJIUjR5MWhZMkFiREJXdw?oc=5",
+   "date": "2026-09-04",
+   "published": "2026-09-04 16:00",
+   "source": "에너지데일리",
+   "query": "가스사고"
+  },
+  {
    "title": "경남에너지, 중압 도시가스 배관 파손·가스누출 가정…사고 대응 역량 확인",
    "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE96V2RnbUoycXVWZGZHRXRFMmlyN3JyTXZpOXBnX3hnWFhVMkhQSjBXRWhSbmpKTnF5djBESGJvRzExcEtVeXAwYWh5ZlczYVM5MU50WTI1bVg3UVpSTjltQW8tNXNtNE5xb3VvQdIBcEFVX3lxTE1kRm5uSm8ydThac2p1ZGJkY0o3cmF0T2hxWmVnQ0lfOUNxc1ZjV2NhdzRqOEdpT0FpVHNlNVhvLVRiY21nalRXLWJVQlRnSEZHVjZrSjkzR2RMdDJ3cmliRkpWUUZWaFNmM1k2dXZTZkU?oc=5",
    "date": "2026-09-04",
    "published": "2026-09-04 16:00",
    "source": "전기신문",
+   "query": "가스사고"
+  },
+  {
+   "title": "경남에너지, 대규모 복합재난 긴급구조훈련서 도시가스 사고 점검",
+   "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE8ySXF0ajdRV211NnlmZFZzd3FrVlRRNUZmUTlxZnJpMWFUOEloMHM0WjlfdzIyX3prVHRhdFREZWVrQ0VhZ00tNWpiZUQ4cnFEM0M5TnB3d1VOMHFBMkREX0hpWUlHTmZMckxHZzVlOHprMGvSAXdBVV95cUxPcng3enJ0NkQwd240V0ZEV2theXJ5aE5MdHFlTEZYZ24xeW5lZ3Z2MDRwazhPLUtrSld1Tl9iQUlwc0NOdkpERVFYckptWjlnU2dIa3NqQ3UycjVoTWRteDVFTFBGQzN4Ni1JZlkyaWZ3SU1TT0QxSQ?oc=5",
+   "date": "2026-09-04",
+   "published": "2026-09-04 16:00",
+   "source": "스트레이트뉴스",
    "query": "가스사고"
   },
   {
@@ -2385,6 +2457,14 @@
    "date": "2026-08-30",
    "published": "2026-08-30 16:00",
    "source": "연합뉴스",
+   "query": "가스누출"
+  },
+  {
+   "title": "과천시민회관 빙상장 가스 누출…140여 명 대피",
+   "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE1uaDByVDBMWDlXbWQwMnZBYVZabllvdFhNYUdqZHJIVkZxRlU4M1R5NE81Yzc5MERDTlpUVWZ2bUhsWmR1RGNHSldTV3h6ZXFSSzRhMUtrT1FPcWtvdXRDdmROWkVhTnc?oc=5",
+   "date": "2026-08-30",
+   "published": "2026-08-30 16:00",
+   "source": "연합뉴스TV",
    "query": "가스누출"
   },
   {
@@ -2460,6 +2540,14 @@
    "query": "가스누출"
   },
   {
+   "title": "[속보]서울 양평동 공장서 암모니아 가스 누출…인명피해 없어",
+   "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1abkk4SFdNMThnT3FMUV9LcFFRTmt1OF9NcVZ4QTJIWHR1ckdYQWp1MV9YZGU4YjhHMDNHNHZCZmhUbjJFVWdwWVVoTU5EWEh4eGxteDUtNjA3QdIBX0FVX3lxTE9GLUktMERfdjdlUEFEcmFIejk4M2hBNkpUWjZNa2Q0eERiVWdkd0dGekhvblR6bnlvMHZhZkxVZHJrZkpQSlltTGZqX0RaU2MydndUeU03MjJEUk5MQVYw?oc=5",
+   "date": "2026-08-21",
+   "published": "2026-08-21 16:00",
+   "source": "경향신문",
+   "query": "가스누출"
+  },
+  {
    "title": "롯데웰푸드, 영등포공장 암모니아 누출 사과…\"재발 방지책 마련\"",
    "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE9ldG1FdUppV3lKTE9ubDZET2xuaTFuTlE4V0lRTUZtNWZuY0RVZ0FleUpwakVaTmY5YndPM1d0QjV0MTNQdngtVWJRcEtDalU3RG0yTFlmZjJjZm1vZW5lTDFmZmd3R3M?oc=5",
    "date": "2026-08-21",
@@ -2484,19 +2572,11 @@
    "query": "가스누출"
   },
   {
-   "title": "[속보]서울 양평동 공장서 암모니아 가스 누출…인명피해 없어",
-   "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1abkk4SFdNMThnT3FMUV9LcFFRTmt1OF9NcVZ4QTJIWHR1ckdYQWp1MV9YZGU4YjhHMDNHNHZCZmhUbjJFVWdwWVVoTU5EWEh4eGxteDUtNjA3QdIBX0FVX3lxTE9GLUktMERfdjdlUEFEcmFIejk4M2hBNkpUWjZNa2Q0eERiVWdkd0dGekhvblR6bnlvMHZhZkxVZHJrZkpQSlltTGZqX0RaU2MydndUeU03MjJEUk5MQVYw?oc=5",
-   "date": "2026-08-21",
-   "published": "2026-08-21 16:00",
-   "source": "경향신문",
-   "query": "가스누출"
-  },
-  {
    "title": "영등포 롯데웰푸드 공장서 암모니아 가스 누출…40여명 대피",
    "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFBQeDZjWDY1NG1YUUFfUUg5UmFOWmRUM2pFUzMwV080ZzdneXJNNUJtdmhOenlhUUxZZ084R1hlbENlYkJtdUQ0ZzZQR0FtaklsX25lYVJOaEM3LTDSAWBBVV95cUxPZldyMjNGSnQweG1DNlNaTnl3VHZ4bzdfUTRLcy1GY2swTzN2TGpJWU1lSlpoNlFlbXdGVUJmTHpDd2tfeDZ0YVIwaGRnWFdfZjJiMmZQcEk5RHNiTjV1QmI?oc=5",
    "date": "2026-08-21",
    "published": "2026-08-21 16:00",
-   "source": "yna.co.kr",
+   "source": "연합뉴스",
    "query": "가스누출"
   },
   {
@@ -2504,6 +2584,14 @@
    "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE1QVEluMkJpS1JBTmZmbXE4X2kzZGZfSFRmV2o3VWw3OVVUaHU1clpGNlppdXJWaHZKNzBoSjllTlBKZVhEbHpmbTYzcVl6WDZNRGpLdVpjNUVnZHUtNG1ENFFua25KNEstSXfSAW5BVV95cUxPdXlBX29mQXZhVk90eWlXUDVSSDFvTTRGbWRJczhxU2owMUh4enpnXzdaWWphZWVCN2JPakoyUnhJSmFtNDhnTjhNMHBHN0dVS0xERHdELW9WWndjOXd1a2lXUzdUelZSandsMUcwQQ?oc=5",
    "date": "2026-08-20",
    "published": "2026-08-20 16:00",
+   "source": "가스신문",
+   "query": "가스사고"
+  },
+  {
+   "title": "올 상반기, 가스사고 다시 늘었다",
+   "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE1kNDVFcXJVeWVoT0pSUzBjd0Z6bW0xalNuOVpkVE9mdk5xenM3SUZ6QXh3RnFWa1RPaTVKUnJzSkFZejIxTURRd0xLZTYteVNIcDA5bXhZek9WcTZieVA0eEpUazFyTmtaREHSAW5BVV95cUxPUW1pRHZqYUlZMDN4M3VvSzIySzFrMXVha21GZF9VSjc0eEJOTnRyZFNmdF9yOUY0UndGZjBpMjJNQk9rVnVHbXdTQ1hZbG5NbXVvZy16T0tLS3k4QTgzSXR2YzJjQUVPUFJ4OEFLdw?oc=5",
+   "date": "2026-08-19",
+   "published": "2026-08-19 16:00",
    "source": "가스신문",
    "query": "가스사고"
   },
@@ -2588,20 +2676,20 @@
    "query": "가스사고"
   },
   {
-   "title": "서울 동대문구 공동주택 화재… 부탄가스 폭발, 2명 화상",
-   "link": "https://news.google.com/rss/articles/CBMiRkFVX3lxTE5UeHBzY0VWMVJnZUQ3V2g3blhwWUpvanNkeDJ1NndoS3VEYkR6VEVvbjh0ZHVXLWFBcFlfWnRQNTd1cnlOMnc?oc=5",
-   "date": "2026-08-06",
-   "published": "2026-08-06 16:00",
-   "source": "FPN-소방방재신문",
-   "query": "가스폭발"
-  },
-  {
    "title": "가스안전공사 충남본부, LP가스 판매사업자와 가스사고 예방 협력 강화",
    "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE9fTTJMWi01VkdpTnpDb3B2UFk3Q2ZNRkJKc05hZGRDVkVmX296c3l0aG5PcElITVJpbngtN25YblFYQXVGYlp1MmpMU2sxS1d6YmhocTlvOW9XcjUwTm9kdm9YSzdmbTdPdXpMY09qeGVZQQ?oc=5",
    "date": "2026-08-06",
    "published": "2026-08-06 16:00",
    "source": "에너지데일리",
    "query": "가스사고"
+  },
+  {
+   "title": "서울 동대문구 공동주택 화재… 부탄가스 폭발, 2명 화상",
+   "link": "https://news.google.com/rss/articles/CBMiRkFVX3lxTE5UeHBzY0VWMVJnZUQ3V2g3blhwWUpvanNkeDJ1NndoS3VEYkR6VEVvbjh0ZHVXLWFBcFlfWnRQNTd1cnlOMnc?oc=5",
+   "date": "2026-08-06",
+   "published": "2026-08-06 16:00",
+   "source": "FPN-소방방재신문",
+   "query": "가스폭발"
   },
   {
    "title": "“집중호우 뒤 가스사고 막는다”…가스안전공사 경기광역본부, 대형 굴착공사장 합동 점검",
@@ -2642,6 +2730,14 @@
    "published": "2026-08-03 16:00",
    "source": "머니투데이",
    "query": "가스폭발"
+  },
+  {
+   "title": "충주 아크릴 제조 공장서 유해가스 누출…인명피해 없어",
+   "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1mcnV3SlRjZnhZXzdUR09vTnhRZVN4OU9XQ3U3MnRkc2R6TUVTNC12SVpYcDQ0TFU4NFdoYm5lcWRLdWZ5VElXcVdpWjVuZ0xNRXFHcHdpTFliVWfSAWBBVV95cUxOdkxBSm9sS1hmYXp4Mks4THlpeUlVSU9GY3VxT0V6YXA4d1FENG9aRFR6ZGlPaHhKbW1iQnowdG84VFRSSlZRc1AxLVFjc2czZGVQOE0xcjRZcjdOR0d5YVI?oc=5",
+   "date": "2026-08-03",
+   "published": "2026-08-03 16:00",
+   "source": "연합뉴스",
+   "query": "가스누출"
   },
   {
    "title": "동료 구하려 들어갔다가… 파키스탄 탄광 가스 폭발로 34명 사망 - 조선비즈",
@@ -2788,19 +2884,19 @@
    "query": "가스사고"
   },
   {
-   "title": "청주 봉명동 LP가스 폭발…경찰, 식당 업주·가스업체 대표 송치",
-   "link": "https://news.google.com/rss/articles/CBMilgFBVV95cUxQZEtNMjdncXVFU0M1Ml8zc21VeVVTbWdEajR1ZTZaeDljTWxqN29kaGVQZWw2VE1UdjJBWll3STEtSXVFbl9paDIyOEFmakpNZmM5XzVUNmtWSXZCMHlTWG5HazdZMEJLTHZhSGpKQ0xkV3JsSmNiNXMzcFE3WDVMSDRqNURlSmhiWXduREFkZjg0RnJJTmc?oc=5",
-   "date": "2026-07-23",
-   "published": "2026-07-23 16:00",
-   "source": "조선일보",
-   "query": "가스폭발"
-  },
-  {
    "title": "'17명 부상' 청주 폭발사고 식당 주인·가스시공업체 대표 송치",
    "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5iN0F5Skl5b2lpOVpVdDJ0UE1MV3VZZFdsVE8tdTBWRjZoYkVldlBQN3RCeGNYbkYycnFabUxMdlRKc1dVM0hEOXp4VnZMZlFnWUNBZF9ndFozdFHSAWBBVV95cUxPZkhWS21sdko4M1dLdkZ2eUhHdC1JQVFCSlJHVkVXSUpGc3hoS0RYaXJWajZmMUcyQXM1ZVZYeWVhc19mNVNmSkN4VGs5RXZuMkZtN1AtQ255NHhKcEtOYnA?oc=5",
    "date": "2026-07-23",
    "published": "2026-07-23 16:00",
    "source": "연합뉴스",
+   "query": "가스폭발"
+  },
+  {
+   "title": "청주 봉명동 LP가스 폭발…경찰, 식당 업주·가스업체 대표 송치",
+   "link": "https://news.google.com/rss/articles/CBMilgFBVV95cUxQZEtNMjdncXVFU0M1Ml8zc21VeVVTbWdEajR1ZTZaeDljTWxqN29kaGVQZWw2VE1UdjJBWll3STEtSXVFbl9paDIyOEFmakpNZmM5XzVUNmtWSXZCMHlTWG5HazdZMEJLTHZhSGpKQ0xkV3JsSmNiNXMzcFE3WDVMSDRqNURlSmhiWXduREFkZjg0RnJJTmc?oc=5",
+   "date": "2026-07-23",
+   "published": "2026-07-23 16:00",
+   "source": "조선일보",
    "query": "가스폭발"
   },
   {
@@ -3276,19 +3372,19 @@
    "query": "가스폭발"
   },
   {
-   "title": "中산시성 탄광 가스폭발 사망 90명으로 급증…시진핑 중대 지시",
-   "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE9Hckx3SFVjaWF3UDFZczhkUUMtQUNWT2ZRNFd2YXVmNVhJQkNGODA5TF94bEJSdzltUlpQUDhxc2YtbXhqcWlFY1ZyaUhIeXBPNFEzeHRIOVE2Z1JZa3I3S09sVThFTzA?oc=5",
-   "date": "2026-05-23",
-   "published": "2026-05-23 16:00",
-   "source": "연합뉴스TV",
-   "query": "가스폭발"
-  },
-  {
    "title": "중국 산시성 광산 가스 폭발사고로 최소 90명 사망",
    "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFA4WWdwVzNwZzdhNDJnck1BeS1zQ1NfNEtyX2gxV2wyclFpX0loTk92Y1JjTVVsbEJyMlNjVDBNUUh0MFJGOGN4ei1yaTA5MTFma1RLQkhwOTQ1TGQ10gFiQVVfeXFMUDc4bEs5dEVMZnFJQXQtNkxmWnpJTVJEUGZGbmdndmRqN3VEcEwwUmpEbFpPVXExbE5WLVNiSWNUdGVaNE9tdkJKdnhLZDFqVkRURS0xTFAzeGhKbi1URG1TNFE?oc=5",
    "date": "2026-05-23",
    "published": "2026-05-23 16:00",
    "source": "BBC",
+   "query": "가스폭발"
+  },
+  {
+   "title": "中산시성 탄광 가스폭발 사망 90명으로 급증…시진핑 중대 지시",
+   "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE9Hckx3SFVjaWF3UDFZczhkUUMtQUNWT2ZRNFd2YXVmNVhJQkNGODA5TF94bEJSdzltUlpQUDhxc2YtbXhqcWlFY1ZyaUhIeXBPNFEzeHRIOVE2Z1JZa3I3S09sVThFTzA?oc=5",
+   "date": "2026-05-23",
+   "published": "2026-05-23 16:00",
+   "source": "연합뉴스TV",
    "query": "가스폭발"
   },
   {
@@ -3332,6 +3428,22 @@
    "query": "가스폭발"
   },
   {
+   "title": "중국 산시성 탄광 가스폭발…최소 82명 사망·수십명 매몰",
+   "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE1DWXJ3T1lUaXhqbUV4Q1ZaczB4T0JUREw3S1hYUnJmWnVTNHcwSEFqWmZhOE80TThhQ3VTSEZJajZpclJuVEhfM1NibnRmUmM?oc=5",
+   "date": "2026-05-23",
+   "published": "2026-05-23 16:00",
+   "source": "Daum",
+   "query": "가스폭발"
+  },
+  {
+   "title": "中 탄광 폭발 82명 사망… 시진핑 \"엄중히 책임 추궁하라\"",
+   "link": "https://news.google.com/rss/articles/CBMingFBVV95cUxNSWx6MXVNdHV3MGlKc193dzR5TUxZTGJZZmpGT21xWUgyQ3RUc1AwcGxhY0lSYTFWVC1sSEtKRFE4c05NYjVBZVBzQ0g4dXJOV0w0LWxfVHRlbF9YcUtfVVRReklTcDdvYTNPbW95TktfbTZiQXRqeXNQUFowWGdCanB5bXZnWC1sUEk3ekVSXzk1RWMwZFFNRjhVRGxlUQ?oc=5",
+   "date": "2026-05-23",
+   "published": "2026-05-23 16:00",
+   "source": "조선일보",
+   "query": "가스폭발"
+  },
+  {
    "title": "중국 산시성 탄광, 가스 폭발 대참사…90명 사망·9명 실종 - 머니투데이",
    "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9QZ0FwbG1ybl9OaS1NRmtDZ29JM2c0Y0owaWRWLVlvOTJqUGc2TTdCX2dWTE9GV2VqcXpialF4NXBfZWVDSERjNTdfN2xUQUJVUHZiRzM2MTV0bkhxQ3FDSDhkMkk1SWVP0gFuQVVfeXFMUEk0TV9nUW96RlI0d2UzNURQdlBkTExIT29ZVVBDcGtpTDJTNXVqVU10ZDhvNm9oOXNVY2ozakZ1THJvWEdSQ0puMV9GNnNKdXNCVE5BTWFra20wa185R3E5RF9UTnZJUjl1R1M0Ync?oc=5",
    "date": "2026-05-23",
@@ -3348,27 +3460,11 @@
    "query": "가스폭발"
   },
   {
-   "title": "中 탄광 폭발 82명 사망… 시진핑 \"엄중히 책임 추궁하라\"",
-   "link": "https://news.google.com/rss/articles/CBMingFBVV95cUxNSWx6MXVNdHV3MGlKc193dzR5TUxZTGJZZmpGT21xWUgyQ3RUc1AwcGxhY0lSYTFWVC1sSEtKRFE4c05NYjVBZVBzQ0g4dXJOV0w0LWxfVHRlbF9YcUtfVVRReklTcDdvYTNPbW95TktfbTZiQXRqeXNQUFowWGdCanB5bXZnWC1sUEk3ekVSXzk1RWMwZFFNRjhVRGxlUQ?oc=5",
-   "date": "2026-05-23",
-   "published": "2026-05-23 16:00",
-   "source": "조선일보",
-   "query": "가스폭발"
-  },
-  {
    "title": "중국 중부 광산 가스 폭발…90명 사망",
    "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9yR29TZWE5ZlpkZ0N5akN1dlF0UVJDOFhmbzZCR0xNNGp2TFNrcTNRbTdLV2dZMk1rRUFNOVdJU056RFEtWHY0VWhGb1A1XzlMeVcwYXJXRURwY1k?oc=5",
    "date": "2026-05-23",
    "published": "2026-05-23 16:00",
    "source": "KBS 뉴스",
-   "query": "가스폭발"
-  },
-  {
-   "title": "중국 산시성 탄광 가스폭발…최소 82명 사망·수십명 매몰",
-   "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE1DWXJ3T1lUaXhqbUV4Q1ZaczB4T0JUREw3S1hYUnJmWnVTNHcwSEFqWmZhOE80TThhQ3VTSEZJajZpclJuVEhfM1NibnRmUmM?oc=5",
-   "date": "2026-05-23",
-   "published": "2026-05-23 16:00",
-   "source": "Daum",
    "query": "가스폭발"
   },
   {
@@ -3468,6 +3564,14 @@
    "query": "가스폭발"
   },
   {
+   "title": "’부부사망’ 의왕 아파트 화재 감식…“가스폭발 추정“",
+   "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE5Wc1hNTlRhZHgtbkFXZ1c1ZzhkNTlWLXd2MTNuVzd0UnJqcGhjd2k4M2NJTXVhLTBkSEYyWUlSSkpJUWxBODVuZFpvT2pFNTg2RlBqbDFvOVBVTEJ2SVJiSlJtdGZ0LVE?oc=5",
+   "date": "2026-05-01",
+   "published": "2026-05-01 16:00",
+   "source": "연합뉴스TV",
+   "query": "가스폭발"
+  },
+  {
    "title": "\"의왕 화재, 가스 폭발 추정...아내, 화재 전 숨진 듯\"",
    "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE9lVWJfZTJFNjFSdThjMjRValFlc1JGNWlJVUQ5QTZNejNKbEtJNjd2T19QeUlydFN0QWpoRnFiR2l2OXdKcmswYS1ybmcwT1M1cnd4RjZmYUxoSDYxaHc?oc=5",
    "date": "2026-05-01",
@@ -3492,19 +3596,11 @@
    "query": "가스폭발"
   },
   {
-   "title": "'부부사망' 의왕 아파트 화재 감식…\"가스폭발 추정\"",
-   "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5ZUWVGeHVEdWVsWWRIVDQ0TGkxOUZiYzhsYUNzMUtmWWxieGh1V3B3MTR0UXlPdXhNNUt0RE5LMlVmUUpKYkYyZkx4S3RTa3NXS2xjMTkxWnRHcm_SAWBBVV95cUxQeXFpY296aHNud1dfZmRaTUx1Z0Z1cE8zWlVFbGoweXh5TVBvTVhSWFZKaGhYVHlNQzlkSFltaVJ5TkdpZjhrQ3h1cEJWbUFMeUpROWNubHhDWmVSWGJuclo?oc=5",
-   "date": "2026-05-01",
-   "published": "2026-05-01 16:00",
-   "source": "연합뉴스",
-   "query": "가스폭발"
-  },
-  {
    "title": "‘8명 사상’ 의왕 아파트 화재…“가스 폭발 추정”",
    "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9JM0YxUUpXaElQNTBxZUVPRkhBeGtLQVJDbDFoZHVwVzNpYkZWS1RicDM1T3h3QVBtRG1ZaGtVNTVud1VsbHdVRnd5NmI1V2pBd2NOcHBESFpOeWc?oc=5",
    "date": "2026-05-01",
    "published": "2026-05-01 16:00",
-   "source": "kyeonggi.com",
+   "source": "경기일보",
    "query": "가스폭발"
   },
   {
@@ -3536,7 +3632,7 @@
    "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTFBKQ3JjZHROSXIxX0VzWWczR1Y4VnJnTDI1aGxEbVVYdXhBS3A2VVppWFB5TE9PY2RmbWZRREM1LUpKSm1xVDdvcUVLbWhjXy1RUDBCaXBVSmlzV0kyTVBNb0RYWkg3UFBoc1HSAW5BVV95cUxPRndmbGxWSDhBOHM0blpMTjNDT0h2YkM0bXpzSGRpTTFXS0t2Q0MxX3otT21qcHFybkRXNnNwU0hQUWFObkdQTldHNHJsaW1rQmM1RE93b1U4ZGJNbFFDWWJXVFpHczBFRm9xUFhnUQ?oc=5",
    "date": "2026-04-28",
    "published": "2026-04-28 16:00",
-   "source": "jbnews.com",
+   "source": "중부매일",
    "query": "가스폭발"
   },
   {
@@ -3568,7 +3664,7 @@
    "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE9nLTA5R2NMTUo4TkJiNVdWOWZyOTJUQjl2aHhpLU5fU1dyNERSSFBoelA3Y201UElVOTVTWWhMZ2pfZUloNEkxMlpnbFZjWG00SFE3RUVWVTFUNlNpMDIxSmRGcFFPRW5manfSAW5BVV95cUxNQkFKb05OZUR5WWxleEtNbDA1OTlhYXo4QzF0Y2ZiUVo2WHhRdExibEZSb0FfV0d1UnR0Z05QWnJ3cDE0cnpfWUtyMDQ5aXVWbGVSYlFGRnZzR2tCMlEwOTlyV2xPTFJod25zMHdHQQ?oc=5",
    "date": "2026-04-16",
    "published": "2026-04-16 16:00",
-   "source": "jbnews.com",
+   "source": "중부매일",
    "query": "가스폭발"
   },
   {
@@ -3588,19 +3684,19 @@
    "query": "가스폭발"
   },
   {
-   "title": "속속 드러나는 'LP가스 폭발 사고' 문제점…누가 어떤 책임질까",
-   "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5XZ3IxM3Npc1UxT0taTzloNWZvNmdBTm1yXzdrSmNEdmJTdnRiN21PWTRVWHFWQWlTTjdya3o1MGRPWUVXVDhpUGZZTU5sbkgtZkJ2OXhOS3VWbmPSAWBBVV95cUxPNFdoNnd6dEJxQjh2U2JVb2pEVEtYZHpJcGhoYmhKMFcyLWZMdjZoaTUwaWdzeDItY0tfYjdIa19OalpzT1NfNGZ3SjRWVGNpY3NKYlctUjJDb3hXUkpXcGY?oc=5",
-   "date": "2026-04-15",
-   "published": "2026-04-15 16:00",
-   "source": "연합뉴스",
-   "query": "가스폭발"
-  },
-  {
    "title": "청주 ’식당 LP가스 폭발’ 피해 300여건 접수",
    "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE9yQ2F4bUIxNzNuTGNjMmxWV1FIY2REWUp4OEhFWmpDcE9sVW81MHd1bjJfSEtNbVBPbHNzUl8xbHlLTlJIWFl2R1pqMnQ0c3ZaRlVQUjBaNjhoSXh2bGJocjY2UXZ0S3M?oc=5",
    "date": "2026-04-15",
    "published": "2026-04-15 16:00",
    "source": "연합뉴스TV",
+   "query": "가스폭발"
+  },
+  {
+   "title": "속속 드러나는 'LP가스 폭발 사고' 문제점…누가 어떤 책임질까",
+   "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5XZ3IxM3Npc1UxT0taTzloNWZvNmdBTm1yXzdrSmNEdmJTdnRiN21PWTRVWHFWQWlTTjdya3o1MGRPWUVXVDhpUGZZTU5sbkgtZkJ2OXhOS3VWbmPSAWBBVV95cUxPNFdoNnd6dEJxQjh2U2JVb2pEVEtYZHpJcGhoYmhKMFcyLWZMdjZoaTUwaWdzeDItY0tfYjdIa19OalpzT1NfNGZ3SjRWVGNpY3NKYlctUjJDb3hXUkpXcGY?oc=5",
+   "date": "2026-04-15",
+   "published": "2026-04-15 16:00",
+   "source": "연합뉴스",
    "query": "가스폭발"
   },
   {
@@ -3610,14 +3706,6 @@
    "published": "2026-04-15 16:00",
    "source": "한국아파트신문",
    "query": "가스폭발"
-  },
-  {
-   "title": "“가스 냄새 신고했는데 이상 없다더니”... 청주 폭발 사고 ‘인재’ 논란",
-   "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE4zRUMwME50NnBkVGdZdVhBYko3MnFGNlh6ZXkxa3k2dUZRVXA5bnNvMmdBMnFuNEw1U29wV1A2MUdVaU5Pek16SHAzLVgzNlhkMGR1VmFqdnFJZ9IBX0FVX3lxTE1Ya1pQcmd2bmt5Z1FYUWV6VDVmZTR1dXVqOVAxZVdOc0VObEZJXzhVQkdIR3c0dy1GUkl2OGFiMUxDOWJpcXhJWXdFdnpjLW5YYXE0M1Z3Y21pSFFWV193?oc=5",
-   "date": "2026-04-14",
-   "published": "2026-04-14 16:00",
-   "source": "경향신문",
-   "query": "가스사고"
   },
   {
    "title": "청주 가스 폭발 피해 292건 신고...보상 언제 될지 '막막'",
@@ -3652,6 +3740,22 @@
    "query": "가스폭발"
   },
   {
+   "title": "유리창·차 깨지고 가전도 망가져···‘새벽 날벼락’ 청주 가스 폭발, 주민 재산 피해 계속 늘어",
+   "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE04ellSRmtGV2c0aHJBR2ZPb3IxUkJNei1hM2M5VHpzU2syU2F1YVZDY1MwOW9KcTVuQ1VLZGJ0dVlvSmNodkpoVXZjMWE4alQ2Qk8yX0pCLU1EUdIBX0FVX3lxTE5TZzRlMEhGeGlLS3NHdmpMUW1qVVhjaUFoLXBMTERFbHFZZVpxc0VDQ0Q0MDVndkMxN1BqUEszR09vUDA0T2R3UXhwN1VFYTdYdEpKWW9JOXRpUkFVOHY0?oc=5",
+   "date": "2026-04-14",
+   "published": "2026-04-14 16:00",
+   "source": "경향신문",
+   "query": "가스폭발"
+  },
+  {
+   "title": "“가스 냄새 신고했는데 이상 없다더니”... 청주 폭발 사고 ‘인재’ 논란",
+   "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE4zRUMwME50NnBkVGdZdVhBYko3MnFGNlh6ZXkxa3k2dUZRVXA5bnNvMmdBMnFuNEw1U29wV1A2MUdVaU5Pek16SHAzLVgzNlhkMGR1VmFqdnFJZ9IBX0FVX3lxTE1Ya1pQcmd2bmt5Z1FYUWV6VDVmZTR1dXVqOVAxZVdOc0VObEZJXzhVQkdIR3c0dy1GUkl2OGFiMUxDOWJpcXhJWXdFdnpjLW5YYXE0M1Z3Y21pSFFWV193?oc=5",
+   "date": "2026-04-14",
+   "published": "2026-04-14 16:00",
+   "source": "경향신문",
+   "query": "가스폭발"
+  },
+  {
    "title": "[진단] LPG 소형저장탱크 등 '대형 폭발 사고' 연속 발생",
    "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE5WdGs3Q2Vyd2txMHNLZ3QtbW9wSl9SdUJLQ2FoR3BBb2ZxSThvQ3MzZjgwbFdra2tPd1dwZl96bmFGVHF1bDVHbTRtbkZNZ3RvQWpjRjh6UmtIVUVsUDI3MkJ3Zlh5MnlndGhKVjJR?oc=5",
    "date": "2026-04-14",
@@ -3672,7 +3776,7 @@
    "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE9na2h4RVF2QkwyUC1KZDNUaDVKNy1VUkdtSEdyeHFnTmRudjh4cWtSVkNQaVdIMGtteF9qdDFBb1BxTXNrWjhIMzl5c3hWWHNPTWVMMndUWEdUck9BZXhXOHFvR1NUUkVpT2lJQUM4NVBDVXNN0gF3QVVfeXFMUFlUZElMR0FrcEdZTWtJVFp1TGYtN3RvQzhHMGdORkpkdzEwczNHMDdBVi1WOHEzS3Bfd1Yyb1BrTnQ2cTRoaThhYlViQXNMTHpqTUxTWnBPVzZaREdQUWtLQ0RKbWFWQk1tZmxlT0NQelJXelNKdk0?oc=5",
    "date": "2026-04-13",
    "published": "2026-04-13 16:00",
-   "source": "news.imbc.com",
+   "source": "MBC",
    "query": "가스폭발"
   },
   {
@@ -3708,11 +3812,19 @@
    "query": "가스폭발"
   },
   {
+   "title": "포탄 떨어진 듯 '쾅'… 청주 봉명동 가스 폭발 사고 현장 쑥대밭",
+   "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5TdENmcVc2THNmbGpPOGNBQU5SNmpUeWhPRGc4WlZPS2FETml1dkxsVTFKTlNvRW1kaURiUWE5NjhkT3FLUHljXzBmMVUzY2ZnQzhIVVVLMEZhX09tNVhvM2NIVHotd19PeGc?oc=5",
+   "date": "2026-04-13",
+   "published": "2026-04-13 16:00",
+   "source": "동양일보",
+   "query": "가스폭발"
+  },
+  {
    "title": "유리창 박살나고 자동차 뒤집혀…아수라장 된 청주 가스 폭발 현장",
    "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTFBuUlFYanN5LUJPdXdFS1NSOVoxVFB4STZYN2x3MjM1WVE3eXd2VWpvYkJDT3BsaVktSThsQVpNai0xekhKcWhqMDIzcmhpMzg?oc=5",
    "date": "2026-04-13",
    "published": "2026-04-13 16:00",
-   "source": "v.daum.net",
+   "source": "Daum",
    "query": "가스폭발"
   },
   {
@@ -3721,14 +3833,6 @@
    "date": "2026-04-13",
    "published": "2026-04-13 16:00",
    "source": "뉴스핌",
-   "query": "가스폭발"
-  },
-  {
-   "title": "포탄 떨어진 듯 '쾅'… 청주 봉명동 가스 폭발 사고 현장 쑥대밭",
-   "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5TdENmcVc2THNmbGpPOGNBQU5SNmpUeWhPRGc4WlZPS2FETml1dkxsVTFKTlNvRW1kaURiUWE5NjhkT3FLUHljXzBmMVUzY2ZnQzhIVVVLMEZhX09tNVhvM2NIVHotd19PeGc?oc=5",
-   "date": "2026-04-13",
-   "published": "2026-04-13 16:00",
-   "source": "동양일보",
    "query": "가스폭발"
   },
   {
@@ -3753,6 +3857,14 @@
    "date": "2026-04-13",
    "published": "2026-04-13 16:00",
    "source": "연합뉴스TV",
+   "query": "가스폭발"
+  },
+  {
+   "title": "\"폭탄 떨어진줄\" 새벽 식당 폭발 사고로 잠자던 주민 15명 부상(종합2보)",
+   "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9SWTZ4N051VFljUlhtcEVMaFRVazB5U1p4YUh0TEUyamR5eUsyOC0zd2RlUjdlQTJjTGhEMFBTNjllbjRKQ2FtT3o5R3lGWjhQd0NpZnJ6N3NxS1HSAWBBVV95cUxQNHdIdDZCejlscEpKZ3lleU1fX3ZBVGZPbEY4QnlBdGJrbkNRczZyakU5U2dmRzVzLUhad2xkZUdnbGowUEItdkZXLU0ybWE4Y0NGMkRGUy01NjQwRnNsTG8?oc=5",
+   "date": "2026-04-13",
+   "published": "2026-04-13 16:00",
+   "source": "연합뉴스",
    "query": "가스폭발"
   },
   {
